@@ -3,9 +3,11 @@ import { ThemeContext } from '../../contexts/theme';
 import { FiSun } from 'react-icons/fi';
 import { FiMoon } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
+import Login from '../../views/Login/Login';
+import { PropTypes } from 'prop-types';
 import './Header.css';
 
-export default function Header() {
+export default function Header({ user, logout }) {
   const [{ theme, isDark }, toggleTheme] = useContext(ThemeContext);
 
   return (
@@ -22,20 +24,30 @@ export default function Header() {
       />
       <div
         className={`d-flex bg-${theme.color === 'dark' ? 'light' : 'light'} 
-      rounded align-items-center ms-5`}
+      rounded align-items-center`}
       >
         <NavLink to="/home">
           <img src="/ant_logo.png" alt="logo" />
         </NavLink>
       </div>
       <div className="d-flex gap-2 align-items-center">
+        {!user ? (
+          <Login />
+        ) : (
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <span className="fs-5">Welcome, {user.display_name}</span>
+            <button className="btn btn-danger" onClick={logout}>
+              Logout
+            </button>
+          </div>
+        )}
         <NavLink to="/about">
-          <button className="btn btn-secondary px-3 py-2 fs-5">About</button>
+          <button className="btn btn-secondary">About</button>
         </NavLink>
         <button
           className={`btn btn-${
             isDark ? 'light' : 'dark'
-          } d-flex justify-content-center align-items-center px-4 py-3`}
+          } d-flex justify-content-center align-items-center px-4 py-2 fs-5`}
           onClick={toggleTheme}
         >
           {isDark ? <FiSun /> : <FiMoon />}
@@ -44,3 +56,8 @@ export default function Header() {
     </header>
   );
 }
+
+Header.propTypes = {
+  user: PropTypes.object,
+  logout: PropTypes.func,
+};
