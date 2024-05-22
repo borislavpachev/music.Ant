@@ -17,6 +17,7 @@ export default function Header({ user, logout, search, setSearch }) {
       }`}
     >
       <div
+        onClick={() => setSearch('')}
         className={`d-flex bg-${theme.color === 'dark' ? 'light' : 'light'} 
   rounded align-items-center`}
       >
