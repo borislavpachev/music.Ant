@@ -31,6 +31,7 @@ export default function Header({ user, logout, search, setSearch }) {
         placeholder="Artists, Songs..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        disabled={!user ? true : false}
       />
 
       <div className="d-flex gap-2 align-items-center">
