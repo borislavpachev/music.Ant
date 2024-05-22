@@ -8,7 +8,7 @@ export const getUserData = async (token) => {
       },
     });
     const result = await response.json();
-    if (!result.ok) {
+    if (result.status === 401) {
       localStorage.removeItem('spotifyToken');
     }
     return result;
