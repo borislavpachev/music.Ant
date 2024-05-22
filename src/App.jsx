@@ -9,6 +9,7 @@ import hash from './hash';
 import { getUserData } from './services/auth.service';
 import { spotifyApi } from './services/spotify.service';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
@@ -32,9 +33,13 @@ function App() {
 
     if (_token) {
       setToken(_token);
-      getUserData(_token).then((data) => {
-        setUser(data);
-      });
+      getUserData(_token)
+        .then((data) => {
+          setUser(data);
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     }
   }, []);
 
@@ -53,14 +58,12 @@ function App() {
             artist: track.artists[0].name,
             trackName: track.name,
             uri: track.uri,
-            albumURL: track.album.images[0].url,
+            albumCover: track.album.images[0].url,
           };
         })
       );
     });
   }, [search, token]);
-
-  console.log(searchResults);
 
   const handleLogout = () => {
     setToken(null);
@@ -72,6 +75,7 @@ function App() {
     <>
       <main className={`app bg-${theme.color} text-${theme.textColor}`}>
         <BrowserRouter>
+          <Toaster />
           <Header
             user={user}
             logout={handleLogout}
@@ -79,8 +83,8 @@ function App() {
             setSearch={setSearch}
           />
           <Routes>
-            <Route index element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route index element={<Home results={searchResults} />} />
+            <Route path="/home" element={<Home results={searchResults} />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
