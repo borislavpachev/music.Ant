@@ -1,14 +1,13 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/theme';
-import { FiSun } from 'react-icons/fi';
-import { FiMoon } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 import Login from '../Login/Login';
+import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 import { PropTypes } from 'prop-types';
 import './Header.css';
 
 export default function Header({ user, logout, search, setSearch }) {
-  const [{ theme, isDark }, toggleTheme] = useContext(ThemeContext);
+  const [{ theme, isDark }] = useContext(ThemeContext);
 
   return (
     <nav
@@ -44,17 +43,10 @@ export default function Header({ user, logout, search, setSearch }) {
             </button>
           </div>
         )}
-        <NavLink to="/about">
-          <button className="btn btn-secondary">About</button>
+        <NavLink to="/about" className="btn btn-secondary">
+          About
         </NavLink>
-        <button
-          className={`btn btn-${
-            isDark ? 'light' : 'dark'
-          } d-flex justify-content-center align-items-center px-4 py-2 fs-5`}
-          onClick={toggleTheme}
-        >
-          {isDark ? <FiSun /> : <FiMoon />}
-        </button>
+        <ThemeSwitch />
       </div>
     </nav>
   );
