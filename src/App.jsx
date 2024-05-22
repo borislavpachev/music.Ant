@@ -8,8 +8,8 @@ import About from './views/About/About';
 import hash from './hash';
 import { getUserData } from './services/auth.service';
 import { spotifyApi } from './services/spotify.service';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import toast, { Toaster } from 'react-hot-toast';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
@@ -51,7 +51,9 @@ function App() {
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!token) return;
+    let cancel = false;
     spotifyApi.searchTracks(search).then((res) => {
+      if (cancel) return;
       setSearchResults(
         res.body.tracks.items.map((track) => {
           return {
@@ -63,6 +65,8 @@ function App() {
         })
       );
     });
+
+    return () => (cancel = true);
   }, [search, token]);
 
   const handleLogout = () => {
