@@ -13,7 +13,8 @@ export default function MusicPlayer({ uri, setTrack }) {
 
   if (!token) return;
   return (
-    <div className="music-player d-flex flex-column bg-success align-items-end">
+    <div className="music-player d-flex flex-column bg-success 
+    align-items-end p-1">
       <SpotifyPlayer
         token={token}
         play={true}
@@ -21,7 +22,7 @@ export default function MusicPlayer({ uri, setTrack }) {
         uris={uri ? [uri] : []}
         styles={{ sliderColor: 'green#00B500' }}
       />
-      <button className="btn btn-danger m-2" onClick={() => setTrack(null)}>
+      <button className="btn btn-danger mt-1" onClick={() => setTrack(null)}>
         Close
       </button>
     </div>
