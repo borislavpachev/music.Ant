@@ -20,7 +20,7 @@ export default function MusicPlayer({ uri, setTrack }) {
         play={true}
         showSaveIcon={true}
         uris={uri ? [uri] : []}
-        styles={{ sliderColor: 'green#00B500' }}
+        styles={{ sliderColor: '#00B500' }}
       />
       <button className="btn btn-danger mt-1" onClick={() => setTrack(null)}>
         Close
