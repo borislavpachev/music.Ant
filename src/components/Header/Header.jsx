@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../../contexts/theme';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 import { PropTypes } from 'prop-types';
@@ -8,6 +8,18 @@ import './Header.css';
 
 export default function Header({ user, logout, search, setSearch }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (search && location.pathname !== '/') navigate('/');
+  }, [search]);
+
+  useEffect(() => {
+    if (location.pathname !== '/' && location.pathname !== '/home') {
+      setSearch('');
+    }
+  }, [location.pathname]);
 
   return (
     <nav
