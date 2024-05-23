@@ -13,7 +13,7 @@ export default function Header({ user, logout, search, setSearch }) {
 
   useEffect(() => {
     if (search && location.pathname !== '/') navigate('/');
-  }, [search]);
+  }, [search, location.pathname, navigate]);
 
   useEffect(() => {
     if (location.pathname !== '/' && location.pathname !== '/home') {
@@ -39,7 +39,7 @@ export default function Header({ user, logout, search, setSearch }) {
       </div>
       <input
         type="search"
-        className="form-control mx-4 fs-5"
+        className="form-control mx-3 my-2 fs-5"
         placeholder="Artists, Songs..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
