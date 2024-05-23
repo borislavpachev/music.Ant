@@ -17,6 +17,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
 
   useEffect(() => {
     let _token = hash.access_token;
@@ -45,34 +46,48 @@ function App() {
 
   useEffect(() => {
     if (!token) return;
-    spotifyApi.setAccessToken(token);
+    try {
+      spotifyApi.setAccessToken(token);
+    } catch (error) {
+      toast.error(error.message);
+    }
   }, [token]);
 
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!token) return;
+
     let cancel = false;
-    spotifyApi.searchTracks(search).then((res) => {
-      if (cancel) return;
-      setSearchResults(
-        res.body.tracks.items.map((track) => {
-          return {
-            artist: track.artists[0].name,
-            trackName: track.name,
-            uri: track.uri,
-            albumCover: track.album.images[0].url,
-          };
-        })
-      );
-    });
+
+    spotifyApi
+      .searchTracks(search)
+      .then((res) => {
+        if (cancel) return;
+        setSearchResults(
+          res.body.tracks.items.map((track) => {
+            return {
+              artist: track.artists[0].name,
+              trackName: track.name,
+              uri: track.uri,
+              albumCover: track.album.images[0].url,
+            };
+          })
+        );
+      })
+      .catch((error) => {
+        if (error.message.includes('expired')) {
+          handleLogout();
+        }
+      });
 
     return () => (cancel = true);
-  }, [search, token]);
+  }, [search, token, isLoggedOut]);
 
   const handleLogout = () => {
     setToken(null);
     setUser(null);
     localStorage.removeItem('spotifyToken');
+    setIsLoggedOut(true);
   };
 
   return (
