@@ -39,7 +39,7 @@ export default function Header({ user, logout, search, setSearch }) {
       </div>
       <input
         type="search"
-        className="form-control mx-3 my-2 fs-5"
+        className="form-control mx-3 my-2 fs-5 w-50"
         placeholder="Artists, Songs..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -51,7 +51,7 @@ export default function Header({ user, logout, search, setSearch }) {
           <Login />
         ) : (
           <div className="d-flex align-items-center justify-content-center gap-2">
-            <span className="fs-5">Welcome, {user.display_name}</span>
+            <span className="fs-5 mx-3">Welcome, {user.display_name}</span>
             <button className="btn btn-danger" onClick={logout}>
               Logout
             </button>

@@ -13,7 +13,7 @@ export default function Login() {
         '%20'
       )}&response_type=token&show_dialog=true`}
     >
-      <button className="btn btn-success">Spotify Login</button>
+      <button className="btn btn-success w-100">Spotify Login</button>
     </Link>
   );
 }
