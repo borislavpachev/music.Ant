@@ -8,11 +8,11 @@ export const getUserData = async (token) => {
       },
     });
     const result = await response.json();
-    if (result.status === 401) {
-      localStorage.removeItem('spotifyToken');
-    }
     return result;
   } catch (error) {
+    if (error.status === 401) {
+      localStorage.removeItem('spotifyToken');
+    }
     toast.error(error.message);
   }
 };
