@@ -10,9 +10,6 @@ export const getUserData = async (token) => {
     const result = await response.json();
     return result;
   } catch (error) {
-    if (error.status === 401) {
-      localStorage.removeItem('spotifyToken');
-    }
     toast.error(error.message);
   }
 };
