@@ -5,7 +5,6 @@ import ErrorPage from './views/ErrorPage/ErrorPage';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './contexts/theme';
 import About from './views/About/About';
-import hash from './hash';
 import { getUserData } from './services/auth.service';
 import { spotifyApi } from './services/spotify.service';
 import toast, { Toaster } from 'react-hot-toast';
@@ -13,49 +12,43 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
-  const [token, setToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
-
+  
   useEffect(() => {
-    let _token = hash.access_token;
-
-    if (_token) {
-      localStorage.setItem('spotifyToken', _token);
-      window.location.hash = '';
-    }
-
-    const storedToken = localStorage.getItem('spotifyToken');
-    if (storedToken) {
-      _token = storedToken;
-    }
-
-    if (_token) {
-      setToken(_token);
-      getUserData(_token)
-        .then((data) => {
-          setUser(data);
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setAccessToken(token);
     }
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    if (!accessToken) return;
+    getUserData(accessToken)
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (!accessToken) return;
     try {
-      spotifyApi.setAccessToken(token);
+      spotifyApi.setAccessToken(accessToken);
     } catch (error) {
       toast.error(error.message);
     }
-  }, [token]);
+  }, [accessToken]);
 
   useEffect(() => {
-    if (!search) return setSearchResults([]);
-    if (!token) return;
+    if (!search || !accessToken) {
+      setSearchResults([]);
+      return;
+    }
 
     let cancel = false;
 
@@ -81,13 +74,12 @@ function App() {
       });
 
     return () => (cancel = true);
-  }, [search, token, isLoggedOut]);
+  }, [search, accessToken]);
 
   const handleLogout = () => {
-    setToken(null);
+    setAccessToken(null);
     setUser(null);
     localStorage.removeItem('spotifyToken');
-    setIsLoggedOut(true);
   };
 
   return (
@@ -102,8 +94,18 @@ function App() {
             setSearch={setSearch}
           />
           <Routes>
-            <Route index element={<Home results={searchResults} />} />
-            <Route path="/home" element={<Home results={searchResults} />} />
+            <Route
+              index
+              element={
+                <Home results={searchResults} setAccessToken={setAccessToken} />
+              }
+            />
+            <Route
+              path="/home"
+              element={
+                <Home results={searchResults} setAccessToken={setAccessToken} />
+              }
+            />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
