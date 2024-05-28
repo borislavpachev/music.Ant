@@ -33,7 +33,7 @@ export default function Header({ user, logout, search, setSearch }) {
         className={`d-flex bg-${theme.color === 'dark' ? 'light' : 'light'} 
   rounded align-items-center`}
       >
-        <NavLink to="/home">
+        <NavLink to="/">
           <img src="/ant_logo.png" alt="logo" />
         </NavLink>
       </div>
