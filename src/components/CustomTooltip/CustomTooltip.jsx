@@ -12,7 +12,7 @@ export default function CustomTooltip({ text, tooltipText }) {
         </Tooltip>
       }
     >
-      <h5>{text}</h5>
+      <h5 style={{cursor:"pointer"}}>{text}</h5>
     </OverlayTrigger>
   );
 }
