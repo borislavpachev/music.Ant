@@ -5,9 +5,13 @@ import MusicPlayer from '../../components/MusicPlayer/MusicPlayer';
 import { useNavigate } from 'react-router-dom';
 import { clientId, redirectUri } from '../../spotify.config';
 import toast from 'react-hot-toast';
+import useAuth from '../../customHooks/useAuth';
+import { getUserData } from '../../services/auth.service';
 
-export default function Home({ results, setAccessToken }) {
+export default function Home({ results, setUser }) {
   const [currentlyPlayingTrack, setCurrentlyPlayingTrack] = useState(null);
+  const { accessToken, setAccessToken, setRefreshToken, setExpiresIn } =
+    useAuth();
 
   const navigate = useNavigate();
 
@@ -19,6 +23,17 @@ export default function Home({ results, setAccessToken }) {
       navigate('/');
     }
   }, []);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    getUserData(accessToken)
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  }, [accessToken]);
 
   const getToken = async (code) => {
     const codeVerifier = localStorage.getItem('code_verifier');
@@ -41,9 +56,15 @@ export default function Home({ results, setAccessToken }) {
         payload
       );
       const data = await response.json();
+
       if (data) {
         localStorage.setItem('accessToken', data.access_token);
+        localStorage.setItem('refreshToken', data.refresh_token);
+        localStorage.setItem('expiresIn', data.expires_in);
+
         setAccessToken(data.access_token);
+        setRefreshToken(data.refresh_token);
+        setExpiresIn(data.expires_in);
       } else {
         console.error('Error fetching token:', data);
       }
@@ -93,5 +114,5 @@ export default function Home({ results, setAccessToken }) {
 
 Home.propTypes = {
   results: PropTypes.array,
-  setAccessToken: PropTypes.func,
+  setUser: PropTypes.func,
 };
