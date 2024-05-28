@@ -1,26 +1,22 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { PropTypes } from 'prop-types';
 import './MusicPlayer.css';
 import { ThemeContext } from '../../contexts/theme';
+import useAuth from '../../customHooks/useAuth';
 
 export default function MusicPlayer({ uri, setTrack }) {
   const [{ isDark }] = useContext(ThemeContext);
-  const [token, setToken] = useState(null);
+  const { accessToken } = useAuth();
 
-  useEffect(() => {
-    let authToken = localStorage.getItem('spotifyToken');
-    setToken(authToken);
-  }, []);
-
-  if (!token) return;
+  if (!accessToken) return;
   return (
     <div
       className="music-player d-flex flex-column bg-success 
     align-items-end p-1"
     >
       <SpotifyPlayer
-        token={token}
+        token={accessToken}
         play={true}
         showSaveIcon={true}
         uris={uri ? [uri] : []}
