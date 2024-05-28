@@ -1,9 +1,9 @@
 import SpotifyWebApi from 'spotify-web-api-node';
-import { clientId, clientSecret, redirectUri } from '../spotify.config';
+import { redirectUri } from '../spotify.config';
 
 export const spotifyApi = new SpotifyWebApi({
-  clientId: clientId,
-  clientSecret: clientSecret,
+  clientId: `${import.meta.env.VITE_CLIENT_ID}`,
+  clientSecret: `${import.meta.env.VITE_CLIENT_SECRET}`,
   redirectUri: redirectUri,
 });
 

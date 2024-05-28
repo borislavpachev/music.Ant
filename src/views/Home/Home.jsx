@@ -3,7 +3,7 @@ import TrackMusicCard from '../../components/TrackMusicCard/TrackMusicCard';
 import { useEffect, useState } from 'react';
 import MusicPlayer from '../../components/MusicPlayer/MusicPlayer';
 import { useNavigate } from 'react-router-dom';
-import { clientId, redirectUri } from '../../spotify.config';
+import { redirectUri } from '../../spotify.config';
 import toast from 'react-hot-toast';
 
 export default function Home({
@@ -31,7 +31,7 @@ export default function Home({
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
-        client_id: clientId,
+        client_id: `${import.meta.env.VITE_CLIENT_ID}`,
         grant_type: 'authorization_code',
         code,
         redirect_uri: redirectUri,
