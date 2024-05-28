@@ -8,22 +8,37 @@ import About from './views/About/About';
 import { getUserData } from './services/auth.service';
 import { refreshAccessToken, spotifyApi } from './services/spotify.service';
 import toast, { Toaster } from 'react-hot-toast';
-import useAuth from './customHooks/useAuth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
-  const {
-    accessToken,
-    setAccessToken,
-    refreshToken,
-    setRefreshToken,
-    expiresIn,
-    setExpiresIn,
-  } = useAuth();
+  const [accessToken, setAccessToken] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(null);
+  const [expiresIn, setExpiresIn] = useState(null);
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    const refreshing = localStorage.getItem('refreshToken');
+    const expires = localStorage.getItem('expiresIn');
+
+    if (!token) return;
+
+    setAccessToken(token);
+    setRefreshToken(refreshing);
+    setExpiresIn(expires);
+  }, []);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    try {
+      spotifyApi.setAccessToken(accessToken);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }, [accessToken]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -34,15 +49,6 @@ function App() {
       .catch((error) => {
         toast.error(error.message);
       });
-  }, [accessToken]);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    try {
-      spotifyApi.setAccessToken(accessToken);
-    } catch (error) {
-      toast.error(error.message);
-    }
   }, [accessToken]);
 
   useEffect(() => {
@@ -69,6 +75,9 @@ function App() {
         );
       })
       .catch((error) => {
+        if (error.message.includes('expired')) {
+          handleLogout();
+        }
         toast.error(error.message);
       });
 
@@ -81,6 +90,7 @@ function App() {
     const interval = setInterval(() => {
       refreshAccessToken(refreshToken)
         .then((data) => {
+          console.log(data);
           setAccessToken(data.access_token);
           setExpiresIn(data.expires_in);
           localStorage.setItem('accessToken', data.access_token);
@@ -96,6 +106,7 @@ function App() {
     setAccessToken(null);
     setRefreshToken(null);
     setExpiresIn(null);
+    setSearch('');
     setUser(null);
 
     localStorage.removeItem('accessToken');
@@ -117,11 +128,25 @@ function App() {
           <Routes>
             <Route
               index
-              element={<Home results={searchResults} setUser={setUser} />}
+              element={
+                <Home
+                  results={searchResults}
+                  setAccessToken={setAccessToken}
+                  setRefreshToken={setRefreshToken}
+                  setExpiresIn={setExpiresIn}
+                />
+              }
             />
             <Route
               path="/home"
-              element={<Home results={searchResults} setUser={setUser} />}
+              element={
+                <Home
+                  results={searchResults}
+                  setAccessToken={setAccessToken}
+                  setRefreshToken={setRefreshToken}
+                  setExpiresIn={setExpiresIn}
+                />
+              }
             />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<ErrorPage />} />

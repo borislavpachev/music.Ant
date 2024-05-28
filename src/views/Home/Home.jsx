@@ -5,14 +5,14 @@ import MusicPlayer from '../../components/MusicPlayer/MusicPlayer';
 import { useNavigate } from 'react-router-dom';
 import { clientId, redirectUri } from '../../spotify.config';
 import toast from 'react-hot-toast';
-import useAuth from '../../customHooks/useAuth';
-import { getUserData } from '../../services/auth.service';
 
-export default function Home({ results, setUser }) {
+export default function Home({
+  results,
+  setAccessToken,
+  setRefreshToken,
+  setExpiresIn,
+}) {
   const [currentlyPlayingTrack, setCurrentlyPlayingTrack] = useState(null);
-  const { accessToken, setAccessToken, setRefreshToken, setExpiresIn } =
-    useAuth();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,17 +23,6 @@ export default function Home({ results, setUser }) {
       navigate('/');
     }
   }, []);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    getUserData(accessToken)
-      .then((data) => {
-        setUser(data);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  }, [accessToken]);
 
   const getToken = async (code) => {
     const codeVerifier = localStorage.getItem('code_verifier');
@@ -114,5 +103,7 @@ export default function Home({ results, setUser }) {
 
 Home.propTypes = {
   results: PropTypes.array,
-  setUser: PropTypes.func,
+  setAccessToken: PropTypes.func,
+  setRefreshToken: PropTypes.func,
+  setExpiresIn: PropTypes.func,
 };

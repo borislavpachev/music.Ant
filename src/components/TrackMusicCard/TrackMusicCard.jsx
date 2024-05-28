@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/theme';
 import { CiPlay1 } from 'react-icons/ci';
 import './TrackMusicCard.css';
+import CustomTooltip from '../CustomTooltip/CustomTooltip';
 
 export default function TrackMusicCard({ result, selectTrack }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
@@ -35,7 +36,10 @@ export default function TrackMusicCard({ result, selectTrack }) {
                 textOverflow: 'ellipsis',
               }}
             >
-              <h5 title={`${result.trackName}`}>{result.trackName}</h5>
+              <CustomTooltip
+                text={result.trackName}
+                tooltipText={result.trackName}
+              />
             </div>
             <p>{result.artist}</p>
           </div>
