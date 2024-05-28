@@ -90,7 +90,6 @@ function App() {
     const interval = setInterval(() => {
       refreshAccessToken(refreshToken)
         .then((data) => {
-          console.log(data);
           setAccessToken(data.access_token);
           setExpiresIn(data.expires_in);
           localStorage.setItem('accessToken', data.access_token);
