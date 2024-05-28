@@ -6,23 +6,24 @@ import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './contexts/theme';
 import About from './views/About/About';
 import { getUserData } from './services/auth.service';
-import { spotifyApi } from './services/spotify.service';
+import { refreshAccessToken, spotifyApi } from './services/spotify.service';
 import toast, { Toaster } from 'react-hot-toast';
+import useAuth from './customHooks/useAuth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
-  const [accessToken, setAccessToken] = useState(null);
+  const {
+    accessToken,
+    setAccessToken,
+    refreshToken,
+    setRefreshToken,
+    expiresIn,
+    setExpiresIn,
+  } = useAuth();
   const [user, setUser] = useState(null);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setAccessToken(token);
-    }
-  }, []);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -68,18 +69,38 @@ function App() {
         );
       })
       .catch((error) => {
-        if (error.message.includes('expired')) {
-          handleLogout();
-        }
+        toast.error(error.message);
       });
 
     return () => (cancel = true);
   }, [search, accessToken]);
 
+  useEffect(() => {
+    if (!refreshToken || !expiresIn) return;
+
+    const interval = setInterval(() => {
+      refreshAccessToken(refreshToken)
+        .then((data) => {
+          setAccessToken(data.access_token);
+          setExpiresIn(data.expires_in);
+          localStorage.setItem('accessToken', data.access_token);
+          localStorage.setItem('expiresIn', data.expires_in);
+        })
+        .catch((error) => toast.error(error.message));
+    }, (expiresIn - 60) * 1000);
+
+    return () => clearInterval(interval);
+  }, [refreshToken, expiresIn]);
+
   const handleLogout = () => {
     setAccessToken(null);
+    setRefreshToken(null);
+    setExpiresIn(null);
     setUser(null);
-    localStorage.removeItem('spotifyToken');
+
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('expiresIn');
   };
 
   return (
@@ -96,15 +117,11 @@ function App() {
           <Routes>
             <Route
               index
-              element={
-                <Home results={searchResults} setAccessToken={setAccessToken} />
-              }
+              element={<Home results={searchResults} setUser={setUser} />}
             />
             <Route
               path="/home"
-              element={
-                <Home results={searchResults} setAccessToken={setAccessToken} />
-              }
+              element={<Home results={searchResults} setUser={setUser} />}
             />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<ErrorPage />} />
