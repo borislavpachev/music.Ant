@@ -1,6 +1,7 @@
 import Header from './components/Header/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './views/Home/Home';
+import Profile from './views/Profile/Profile';
 import ErrorPage from './views/ErrorPage/ErrorPage';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './contexts/theme';
@@ -42,7 +43,7 @@ function App() {
 
   useEffect(() => {
     if (!accessToken) return;
-    getUserData(accessToken)
+    getUserData(accessToken, handleLogout)
       .then((data) => {
         setUser(data);
       })
@@ -60,7 +61,7 @@ function App() {
     let cancel = false;
 
     spotifyApi
-      .searchTracks(search)
+      .searchTracks(search, { limit: 24 })
       .then((res) => {
         if (cancel) return;
         setSearchResults(
@@ -148,6 +149,10 @@ function App() {
               }
             />
             <Route path="/about" element={<About />} />
+            <Route
+              path="/profile"
+              element={<Profile token={accessToken} logout={handleLogout} />}
+            />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
