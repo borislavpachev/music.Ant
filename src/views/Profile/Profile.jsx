@@ -26,10 +26,7 @@ export default function Profile({ token, logout }) {
     <>
       {user ? (
         <div className="w-100 h-100 align-items-center">
-          <div
-            className="bg-warning d-flex align-items-center
-          justify-content-center gap-4 p-2 m-1"
-          >
+          <div className="d-flex px-1 mx-2 my-1 gap-4">
             <ProfileCard user={user} />
             <UserPlaylists token={token} />
           </div>
