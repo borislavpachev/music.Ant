@@ -16,3 +16,13 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: green;
+  width: 5px;
+}
