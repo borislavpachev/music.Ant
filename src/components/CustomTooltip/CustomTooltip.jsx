@@ -1,18 +1,17 @@
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-export default function CustomTooltip({ text, tooltipText }) {
+export default function CustomTooltip({ text, tooltipText, font }) {
   return (
     <OverlayTrigger
       placement="top"
       overlay={
-        <Tooltip id={`tooltip-title`} style={{position:"fixed"}}
-        >
+        <Tooltip id={`tooltip-title`} style={{ position: 'fixed' }}>
           {tooltipText}
         </Tooltip>
       }
     >
-      <h5 style={{cursor:"pointer"}}>{text}</h5>
+      <span style={{ cursor: 'pointer', fontSize: `${font}` }}>{text}</span>
     </OverlayTrigger>
   );
 }
@@ -20,4 +19,5 @@ export default function CustomTooltip({ text, tooltipText }) {
 CustomTooltip.propTypes = {
   text: PropTypes.string,
   tooltipText: PropTypes.string,
+  font: PropTypes.string,
 };
