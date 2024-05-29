@@ -31,9 +31,12 @@ export default function UserTopTracks({ token }) {
   };
 
   return (
-    <HorizontalScroll styleClasses={'d-flex mx-4 my-1 px-0'}>
+    <HorizontalScroll styleClasses={'d-flex mx-4 my-1'}>
       {!userTopTracks ? (
-        <div className="fs-2 text-center border rounded p-5 w-75">
+        <div
+          className="container justify-self-center
+         fs-1 text-center border rounded m-5 p-5"
+        >
           No user tracks
         </div>
       ) : (
