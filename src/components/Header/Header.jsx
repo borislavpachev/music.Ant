@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../../contexts/theme';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 import { PropTypes } from 'prop-types';
@@ -34,7 +34,11 @@ export default function Header({ user, logout, search, setSearch }) {
   rounded align-items-center`}
       >
         <NavLink to="/">
-          <img src="/ant_logo.png" alt="logo" />
+          <img
+            src="/ant_logo1.png"
+            alt="logo"
+            style={{ height: '60px', width: '70px' }}
+          />
         </NavLink>
       </div>
       <input
@@ -51,7 +55,16 @@ export default function Header({ user, logout, search, setSearch }) {
           <Login />
         ) : (
           <div className="d-flex align-items-center justify-content-center gap-2">
-            <span className="fs-5 mx-3">Welcome, {user.display_name}</span>
+            <span className="fs-5 mx-3 p-2">
+              Welcome,
+              <Link
+                to={'/profile'}
+                className="ms-2 fs-4"
+                style={{ textDecoration: 'none', color: 'green' }}
+              >
+                {user.display_name}
+              </Link>
+            </span>
             <button className="btn btn-danger" onClick={logout}>
               Logout
             </button>
