@@ -83,7 +83,7 @@ export default function Home({
           {results.map((result, index) => {
             return (
               <TrackMusicCard
-                result={result}
+                track={result}
                 key={index}
                 selectTrack={selectTrack}
               />
