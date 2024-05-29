@@ -130,6 +130,7 @@ function App() {
               index
               element={
                 <Home
+                  accessToken={accessToken}
                   results={searchResults}
                   setAccessToken={setAccessToken}
                   setRefreshToken={setRefreshToken}
@@ -141,6 +142,7 @@ function App() {
               path="/home"
               element={
                 <Home
+                  accessToken={accessToken}
                   results={searchResults}
                   setAccessToken={setAccessToken}
                   setRefreshToken={setRefreshToken}

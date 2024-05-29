@@ -5,14 +5,18 @@ import MusicPlayer from '../../components/MusicPlayer/MusicPlayer';
 import { useNavigate } from 'react-router-dom';
 import { redirectUri } from '../../spotify.config';
 import toast from 'react-hot-toast';
+import { getNewReleases } from '../../services/music.service';
+import HorizontalScroll from '../../hoc/HorizontalScroll';
 
 export default function Home({
+  accessToken,
   results,
   setAccessToken,
   setRefreshToken,
   setExpiresIn,
 }) {
   const [currentlyPlayingTrack, setCurrentlyPlayingTrack] = useState(null);
+  const [newReleases, setNewReleases] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +27,24 @@ export default function Home({
       navigate('/');
     }
   }, []);
+
+  useEffect(() => {
+    getNewReleases(accessToken).then((data) => {
+      if (data) {
+        setNewReleases(
+          data.map((release) => {
+            return {
+              artist: release.artists[0].name,
+              trackName: release.name,
+              uri: release.uri,
+              albumCover: release.images[0].url,
+              type: release.album_type,
+            };
+          })
+        );
+      }
+    });
+  }, [accessToken]);
 
   const getToken = async (code) => {
     const codeVerifier = localStorage.getItem('code_verifier');
@@ -73,10 +95,40 @@ export default function Home({
   `}
     >
       {results.length === 0 ? (
-        <div className="row align-items-center justify-content-center">
-          <div className="mt-5">
+        <div className="w-100 row align-items-center justify-content-center">
+          <div className="text-center m-3 p-5 border">
             <h3>No search results</h3>
           </div>
+          <HorizontalScroll styleClasses={'h-75 d-flex mx-4 my-1'}>
+            {!newReleases ? (
+              <div
+                className="w-100 justify-self-center
+         fs-2 text-center border rounded m-5 p-5"
+              >
+                No new releases
+              </div>
+            ) : (
+              <>
+                <div
+                  className="d-flex flex-column align-items-center
+                justify-content-center mt-2 p-3 bg-success h-100 w-100"
+                >
+                  <h4 className="text-center text-white"> New Releases</h4>
+                </div>
+                {newReleases.map((track, index) => {
+                  return (
+                    <div style={{ display: 'inline-block' }} key={index}>
+                      <TrackMusicCard
+                        track={track}
+                        key={index}
+                        selectTrack={selectTrack}
+                      />
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </HorizontalScroll>
         </div>
       ) : (
         <div className="row align-items-center justify-content-center">
@@ -102,6 +154,7 @@ export default function Home({
 }
 
 Home.propTypes = {
+  accessToken: PropTypes.string,
   results: PropTypes.array,
   setAccessToken: PropTypes.func,
   setRefreshToken: PropTypes.func,
