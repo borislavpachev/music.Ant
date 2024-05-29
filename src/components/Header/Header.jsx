@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../../contexts/theme';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 import { PropTypes } from 'prop-types';
@@ -43,7 +43,7 @@ export default function Header({ user, logout, search, setSearch }) {
       </div>
       <input
         type="search"
-        className="form-control mx-3 my-2 fs-5 w-50"
+        className="form-control mx-3 my-2 fs-5"
         placeholder="Artists, Songs..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -57,13 +57,13 @@ export default function Header({ user, logout, search, setSearch }) {
           <div className="d-flex align-items-center justify-content-center gap-2">
             <span className="fs-5 mx-3 p-2">
               Welcome,
-              <Link
+              <NavLink
                 to={'/profile'}
                 className="ms-2 fs-4"
                 style={{ textDecoration: 'none', color: 'green' }}
               >
                 {user.display_name}
-              </Link>
+              </NavLink>
             </span>
             <button className="btn btn-danger" onClick={logout}>
               Logout
