@@ -46,6 +46,7 @@ export default function TrackMusicCard({ track, selectTrack }) {
               />
             </div>
             <p>{track.artist}</p>
+            {track.type ? <p>Type: {track.type}</p> : null}
           </div>
           <div className="h-100 m-1">
             <button
