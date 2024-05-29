@@ -5,7 +5,7 @@ import { CiPlay1 } from 'react-icons/ci';
 import './TrackMusicCard.css';
 import CustomTooltip from '../CustomTooltip/CustomTooltip';
 
-export default function TrackMusicCard({ result, selectTrack }) {
+export default function TrackMusicCard({ track, selectTrack }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
 
   return (
@@ -20,7 +20,7 @@ export default function TrackMusicCard({ result, selectTrack }) {
         style={{ width: '18rem', height: '24rem' }}
       >
         <img
-          src={`${result.albumCover}`}
+          src={`${track.albumCover}`}
           alt="cover"
           className="card-img-top p-2"
         />
@@ -37,17 +37,17 @@ export default function TrackMusicCard({ result, selectTrack }) {
               }}
             >
               <CustomTooltip
-                text={result.trackName}
-                tooltipText={result.trackName}
+                text={track.trackName}
+                tooltipText={track.trackName}
               />
             </div>
-            <p>{result.artist}</p>
+            <p>{track.artist}</p>
           </div>
           <div className="h-100 m-1">
             <button
               className="btn btn-success justify-content-center
                align-items-center"
-              onClick={() => selectTrack(result.uri)}
+              onClick={() => selectTrack(track.uri)}
             >
               <CiPlay1 className="fs-4" />
             </button>
@@ -59,6 +59,6 @@ export default function TrackMusicCard({ result, selectTrack }) {
 }
 
 TrackMusicCard.propTypes = {
-  result: PropTypes.object,
+  track: PropTypes.object,
   selectTrack: PropTypes.func,
 };
