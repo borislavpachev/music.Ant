@@ -2,7 +2,6 @@ import { PropTypes } from 'prop-types';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/theme';
 import { CiPlay1 } from 'react-icons/ci';
-import './TrackMusicCard.css';
 import CustomTooltip from '../CustomTooltip/CustomTooltip';
 
 export default function TrackMusicCard({ track, selectTrack }) {
@@ -22,7 +21,11 @@ export default function TrackMusicCard({ track, selectTrack }) {
         <img
           src={`${track.albumCover}`}
           alt="cover"
-          className="card-img-top p-2"
+          className="p-2"
+          style={{
+            height: '210px',
+            width: '235px',
+          }}
         />
         <div
           className="card-body d-flex
@@ -39,6 +42,7 @@ export default function TrackMusicCard({ track, selectTrack }) {
               <CustomTooltip
                 text={track.trackName}
                 tooltipText={track.trackName}
+                font={'21px'}
               />
             </div>
             <p>{track.artist}</p>
