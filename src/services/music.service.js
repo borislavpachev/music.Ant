@@ -25,3 +25,16 @@ export const getMyPlaylists = async (token) => {
       console.log(error.message);
     });
 };
+
+export const getNewReleases = async (token) => {
+  spotifyApi.setAccessToken(token);
+  return spotifyApi
+    .getNewReleases({ limit: 6 })
+    .then((data) => {
+      let newReleases = data.body.albums.items;
+      return newReleases;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
