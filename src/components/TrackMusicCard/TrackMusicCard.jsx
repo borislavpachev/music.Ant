@@ -21,7 +21,7 @@ export default function TrackMusicCard({ track, selectTrack }) {
         <img
           src={`${track.albumCover}`}
           alt="cover"
-          className="p-2"
+          className="p-1"
           style={{
             height: '210px',
             width: '235px',
@@ -31,10 +31,10 @@ export default function TrackMusicCard({ track, selectTrack }) {
           className="card-body d-flex
         align-items-start w-100"
         >
-          <div className="h-100 w-100">
+          <div className="h-100 w-75">
             <div
               style={{
-                height: '35%',
+                height: '25%',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
@@ -42,7 +42,7 @@ export default function TrackMusicCard({ track, selectTrack }) {
               <CustomTooltip
                 text={track.trackName}
                 tooltipText={track.trackName}
-                font={'21px'}
+                font={'23px'}
               />
             </div>
             <p>{track.artist}</p>
