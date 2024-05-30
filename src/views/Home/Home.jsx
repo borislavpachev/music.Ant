@@ -95,14 +95,14 @@ export default function Home({
   `}
     >
       {results.length === 0 ? (
-        <div className="w-100 row align-items-center justify-content-center">
-          <div className="text-center m-3 p-5 border">
+        <div className="w-100 align-items-center justify-content-center">
+          <div className="text-center rounded m-3 p-5 border">
             <h3>No search results</h3>
           </div>
-          <HorizontalScroll styleClasses={'h-75 d-flex mx-4 my-1'}>
+          <HorizontalScroll styleClasses={'h-75 d-flex'}>
             {!newReleases ? (
               <div
-                className="w-100 justify-self-center
+                className="w-100 rounded justify-self-center
          fs-2 text-center border rounded m-5 p-5"
               >
                 No new releases
@@ -110,8 +110,9 @@ export default function Home({
             ) : (
               <>
                 <div
-                  className="d-flex flex-column align-items-center
-                justify-content-center mt-2 p-3 bg-success h-100 w-100"
+                  style={{ zIndex: 10001, left: 0 }}
+                  className="position-sticky d-flex flex-column align-items-center
+                justify-content-center mt-2 p-3 bg-success h-100 w-100 me-3"
                 >
                   <h4 className="text-center text-white"> New Releases</h4>
                 </div>
