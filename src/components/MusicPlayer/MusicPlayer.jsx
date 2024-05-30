@@ -30,9 +30,13 @@ export default function MusicPlayer({ uri, setTrack }) {
           color: isDark ? '#f8f9fa' : '#343a40',
         }}
       />
-      <button className="btn btn-danger mt-1" onClick={() => setTrack(null)}>
-        Close
-      </button>
+      <span
+        onClick={() => setTrack(null)}
+        style={{ cursor: 'pointer' }}
+        className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+      >
+        <span className="btn-close"></span>
+      </span>
     </div>
   );
 }
