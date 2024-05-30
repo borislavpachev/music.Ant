@@ -3,6 +3,7 @@ import { ThemeContext } from '../../contexts/theme';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
+import SearchBar from '../SearchBar/SearchBar';
 import { PropTypes } from 'prop-types';
 import './Header.css';
 
@@ -23,57 +24,75 @@ export default function Header({ user, logout, search, setSearch }) {
 
   return (
     <nav
-      className={`navbar navbar-expand-lg d-flex justify-content-between align-items-center
-    p-3 bg-${theme.color} text-${theme.textColor} ${
+      className={`navbar navbar-expand-md d-flex align-items-center
+    p-2 
+    bg-${theme.color} text-${theme.textColor} ${
         isDark ? 'header-dark' : 'header-light'
       }`}
     >
-      <div
-        onClick={() => setSearch('')}
-        className={`d-flex bg-${theme.color === 'dark' ? 'light' : 'light'} 
-  rounded align-items-center`}
-      >
-        <NavLink to="/">
-          <img
-            src="/ant_logo1.png"
-            alt="logo"
-            style={{ height: '60px', width: '70px' }}
-          />
-        </NavLink>
-      </div>
-      <input
-        type="search"
-        className="form-control mx-3 my-2 fs-5"
-        placeholder="Artists, Songs..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        disabled={!user ? true : false}
-      />
-
-      <div className="d-flex gap-2 align-items-center">
-        {!user ? (
-          <Login />
-        ) : (
-          <div className="d-flex align-items-center justify-content-center gap-2">
-            <span className="fs-5 mx-3 p-2">
-              Welcome,
-              <NavLink
-                to={'/profile'}
-                className="ms-2 fs-4"
-                style={{ textDecoration: 'none', color: 'green' }}
-              >
-                {user.display_name}
+      <div className="container-fluid">
+        <div
+          onClick={() => setSearch('')}
+          className={`d-flex bg-light rounded align-items-center`}
+        >
+          <NavLink to="/">
+            <img
+              src="/ant_logo1.png"
+              alt="logo"
+              style={{ height: '60px', width: '70px' }}
+            />
+          </NavLink>
+        </div>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div
+          className="collapse navbar-collapse"
+          id="navbarContent"
+        >
+          <SearchBar search={search} setSearch={setSearch} user={user} />
+          <ul className="navbar-nav align-items-center justify-content-center gap-2">
+            <li className="nav-item ms-4">
+              {!user ? (
+                <Login />
+              ) : (
+                <span className="fs-5 mx-3 p-2">
+                  Welcome,
+                  <NavLink
+                    to={'/profile'}
+                    className="ms-2 fs-4"
+                    style={{ textDecoration: 'none', color: 'green' }}
+                  >
+                    {user.display_name}
+                  </NavLink>
+                </span>
+              )}
+            </li>
+            {user && (
+              <li className="nav-item">
+                <button className="btn btn-danger" onClick={logout}>
+                  Logout
+                </button>
+              </li>
+            )}
+            <li className="nav-item">
+              <NavLink to="/about" className="btn btn-secondary">
+                About
               </NavLink>
-            </span>
-            <button className="btn btn-danger" onClick={logout}>
-              Logout
-            </button>
-          </div>
-        )}
-        <NavLink to="/about" className="btn btn-secondary">
-          About
-        </NavLink>
-        <ThemeSwitch />
+            </li>
+            <li className="nav-item">
+              <ThemeSwitch />
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );
