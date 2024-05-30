@@ -8,6 +8,7 @@ import { ThemeContext } from './contexts/theme';
 import About from './views/About/About';
 import { getUserData } from './services/auth.service';
 import { refreshAccessToken, spotifyApi } from './services/spotify.service';
+import { getSearchResults } from './services/music.service';
 import toast, { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -58,14 +59,10 @@ function App() {
       return;
     }
 
-    let cancel = false;
-
-    spotifyApi
-      .searchTracks(search, { limit: 24 })
-      .then((res) => {
-        if (cancel) return;
+    getSearchResults(search)
+      .then((results) => {
         setSearchResults(
-          res.body.tracks.items.map((track) => {
+          results.map((track) => {
             return {
               artist: track.artists[0].name,
               trackName: track.name,
@@ -81,26 +78,24 @@ function App() {
         }
         toast.error(error.message);
       });
-
-    return () => (cancel = true);
   }, [search, accessToken]);
 
-  useEffect(() => {
-    if (!refreshToken || !expiresIn) return;
+  // useEffect(() => {
+  //   if (!refreshToken || !expiresIn) return;
 
-    const interval = setInterval(() => {
-      refreshAccessToken(refreshToken)
-        .then((data) => {
-          setAccessToken(data.access_token);
-          setExpiresIn(data.expires_in);
-          localStorage.setItem('accessToken', data.access_token);
-          localStorage.setItem('expiresIn', data.expires_in);
-        })
-        .catch((error) => toast.error(error.message));
-    }, (expiresIn - 60) * 1000);
+  //   const interval = setInterval(() => {
+  //     refreshAccessToken(refreshToken)
+  //       .then((data) => {
+  //         setAccessToken(data.access_token);
+  //         setExpiresIn(data.expires_in);
+  //         localStorage.setItem('accessToken', data.access_token);
+  //         localStorage.setItem('expiresIn', data.expires_in);
+  //       })
+  //       .catch((error) => toast.error(error.message));
+  //   }, (expiresIn - 60) * 1000);
 
-    return () => clearInterval(interval);
-  }, [refreshToken, expiresIn]);
+  //   return () => clearInterval(interval);
+  // }, [refreshToken, expiresIn]);
 
   const handleLogout = () => {
     setAccessToken(null);

@@ -1,6 +1,19 @@
 import { spotifyApi } from './spotify.service';
 
+export const getSearchResults = async (search) => {
+  return spotifyApi
+    .searchTracks(search, { limit: 20 })
+    .then((res) => {
+      const results = res.body.tracks.items;
+      return results;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
 export const getMyTopTracks = async (token) => {
+  if (!token) return;
   spotifyApi.setAccessToken(token);
   return spotifyApi
     .getMyTopTracks()
@@ -14,6 +27,7 @@ export const getMyTopTracks = async (token) => {
 };
 
 export const getMyPlaylists = async (token) => {
+  if (!token) return;
   spotifyApi.setAccessToken(token);
   return spotifyApi
     .getUserPlaylists()
@@ -27,9 +41,10 @@ export const getMyPlaylists = async (token) => {
 };
 
 export const getNewReleases = async (token) => {
+  if (!token) return;
   spotifyApi.setAccessToken(token);
   return spotifyApi
-    .getNewReleases({ limit: 6 })
+    .getNewReleases({ limit: 10 })
     .then((data) => {
       let newReleases = data.body.albums.items;
       return newReleases;
