@@ -6,8 +6,8 @@ import ErrorPage from './views/ErrorPage/ErrorPage';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './contexts/theme';
 import About from './views/About/About';
-import { getUserData } from './services/auth.service';
-import { refreshAccessToken, spotifyApi } from './services/spotify.service';
+import { getUserData, refreshAccessToken } from './services/auth.service';
+import { spotifyApi } from './services/spotify.service';
 import { getSearchResults } from './services/music.service';
 import toast, { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -80,22 +80,22 @@ function App() {
       });
   }, [search, accessToken]);
 
-  // useEffect(() => {
-  //   if (!refreshToken || !expiresIn) return;
+  useEffect(() => {
+    if (!refreshToken || !expiresIn) return;
 
-  //   const interval = setInterval(() => {
-  //     refreshAccessToken(refreshToken)
-  //       .then((data) => {
-  //         setAccessToken(data.access_token);
-  //         setExpiresIn(data.expires_in);
-  //         localStorage.setItem('accessToken', data.access_token);
-  //         localStorage.setItem('expiresIn', data.expires_in);
-  //       })
-  //       .catch((error) => toast.error(error.message));
-  //   }, (expiresIn - 60) * 1000);
+    const interval = setInterval(() => {
+      refreshAccessToken(refreshToken)
+        .then((data) => {
+          setAccessToken(data.access_token);
+          setExpiresIn(data.expires_in);
+          localStorage.setItem('accessToken', data.access_token);
+          localStorage.setItem('expiresIn', data.expires_in);
+        })
+        .catch((error) => toast.error(error.message));
+    }, (expiresIn - 60) * 1000);
 
-  //   return () => clearInterval(interval);
-  // }, [refreshToken, expiresIn]);
+    return () => clearInterval(interval);
+  }, [refreshToken, expiresIn]);
 
   const handleLogout = () => {
     setAccessToken(null);
