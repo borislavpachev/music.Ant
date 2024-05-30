@@ -18,8 +18,8 @@ export default function Login() {
   };
 
   return (
-    <button className="btn btn-success w-100" onClick={handleLogin}>
-      Spotify Login
+    <button className="btn btn-success" onClick={handleLogin}>
+      <span style={{ whiteSpace: 'nowrap' }}>Spotify Login</span>
     </button>
   );
 }
