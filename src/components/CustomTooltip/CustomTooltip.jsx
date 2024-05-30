@@ -11,7 +11,7 @@ export default function CustomTooltip({ text, tooltipText, font }) {
         </Tooltip>
       }
     >
-      <span style={{ cursor: 'pointer', fontSize: `${font}` }}>{text}</span>
+      <span style={{ cursor: 'pointer', fontSize: `${font}`, whiteSpace: 'nowrap'}}>{text}</span>
     </OverlayTrigger>
   );
 }
