@@ -25,26 +25,24 @@ export default function Header({ user, logout, search, setSearch }) {
   return (
     <nav
       className={`navbar navbar-expand-md d-flex align-items-center
-    p-2 
-    bg-${theme.color} text-${theme.textColor} ${
+    p-2 bg-${theme.color} text-${theme.textColor} ${
         isDark ? 'header-dark' : 'header-light'
       }`}
     >
       <div className="container-fluid">
-        <div
+        <NavLink
+          to="/"
           onClick={() => setSearch('')}
-          className={`d-flex bg-light rounded align-items-center`}
+          className="d-flex bg-light rounded align-items-center m-1"
         >
-          <NavLink to="/">
-            <img
-              src="/ant_logo1.png"
-              alt="logo"
-              style={{ height: '60px', width: '70px' }}
-            />
-          </NavLink>
-        </div>
+          <img
+            src="/ant_logo1.png"
+            alt="logo"
+            style={{ height: '65px', width: '70px' }}
+          />
+        </NavLink>
         <button
-          className="navbar-toggler"
+          className="navbar-toggler bg-light"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarContent"
@@ -54,17 +52,14 @@ export default function Header({ user, logout, search, setSearch }) {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div
-          className="collapse navbar-collapse"
-          id="navbarContent"
-        >
+        <div className="collapse navbar-collapse" id="navbarContent">
           <SearchBar search={search} setSearch={setSearch} user={user} />
           <ul className="navbar-nav align-items-center justify-content-center gap-2">
             <li className="nav-item ms-4">
               {!user ? (
                 <Login />
               ) : (
-                <span className="fs-5 mx-3 p-2">
+                <span className="fs-5 p-2">
                   Welcome,
                   <NavLink
                     to={'/profile'}
