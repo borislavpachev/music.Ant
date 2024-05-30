@@ -23,6 +23,6 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: green;
+  background-color: #198754;
   width: 5px;
 }
