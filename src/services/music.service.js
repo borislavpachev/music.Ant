@@ -1,6 +1,9 @@
 import { spotifyApi } from './spotify.service';
 
-export const getSearchResults = async (searchParam) => {
+export const getSearchResults = async (token, searchParam) => {
+  if (!token) return;
+  spotifyApi.setAccessToken(token);
+
   return spotifyApi
     .searchTracks(searchParam, { limit: 20 })
     .then((res) => {
