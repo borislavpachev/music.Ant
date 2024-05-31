@@ -1,22 +1,21 @@
 import { PropTypes } from 'prop-types';
-import TrackMusicCard from '../../components/TrackMusicCard/TrackMusicCard';
-import { useEffect, useState } from 'react';
-import MusicPlayer from '../../components/MusicPlayer/MusicPlayer';
+import { useContext, useEffect, useState } from 'react';
+import { getNewReleases } from '../../services/music.service';
 import { useNavigate } from 'react-router-dom';
 import { redirectUri } from '../../spotify.config';
-import toast from 'react-hot-toast';
-import { getNewReleases } from '../../services/music.service';
+import TrackMusicCard from '../../components/TrackMusicCard/TrackMusicCard';
 import HorizontalScroll from '../../hoc/HorizontalScroll';
+import toast from 'react-hot-toast';
+import { AppContext } from '../../contexts/AppContext';
 
 export default function Home({
   accessToken,
-  results,
   setAccessToken,
   setRefreshToken,
   setExpiresIn,
 }) {
-  const [currentlyPlayingTrack, setCurrentlyPlayingTrack] = useState(null);
   const [newReleases, setNewReleases] = useState(null);
+  const [{setCurrentlyPlayingTrack}] = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -91,72 +90,84 @@ export default function Home({
 
   return (
     <div
-      className={`d-flex flex-column justify-content-center align-items-center
-  `}
+      className={` d-flex flex-column justify-content-center
+       align-items-center fs-5 my-5
+    `}
     >
-      {results.length === 0 ? (
-        <div className="w-100 align-items-center justify-content-center">
-          <div className="text-center rounded m-3 p-5 border">
-            <h3>No search results</h3>
-          </div>
-          <HorizontalScroll styleClasses={'h-75 d-flex'}>
-            {!newReleases ? (
-              <div
-                className="w-100 rounded justify-self-center
-         fs-2 text-center border rounded m-5 p-5"
-              >
-                No new releases
-              </div>
-            ) : (
-              <>
-                <div
-                  style={{ zIndex: 10001, left: 0 }}
-                  className="position-sticky d-flex flex-column align-items-center
-                justify-content-center mt-2 p-3 bg-success h-100 w-100 me-3"
-                >
-                  <h4 className="text-center text-white"> New Releases</h4>
-                </div>
-                {newReleases.map((track, index) => {
-                  return (
-                    <div style={{ display: 'inline-block' }} key={index}>
-                      <TrackMusicCard
-                        track={track}
-                        key={index}
-                        selectTrack={selectTrack}
-                      />
-                    </div>
-                  );
-                })}
-              </>
-            )}
-          </HorizontalScroll>
-        </div>
-      ) : (
-        <div className="row align-items-center justify-content-center">
-          {results.map((result, index) => {
-            return (
-              <TrackMusicCard
-                track={result}
-                key={index}
-                selectTrack={selectTrack}
+      <div className="w-100 align-items-center justify-content-center">
+        <HorizontalScroll styleClasses={'h-100 d-flex'}>
+          {!newReleases ? (
+            <div className="bg-white rounded p-3 mx-3 w-100 text-center">
+              <img
+                src="/ant_logo1.png"
+                alt="logo"
+                style={{ height: '70px', width: '70px' }}
               />
-            );
-          })}
-        </div>
-      )}
-      {!currentlyPlayingTrack ? null : (
-        <MusicPlayer
-          uri={currentlyPlayingTrack}
-          setTrack={setCurrentlyPlayingTrack}
-        />
-      )}
+            </div>
+          ) : (
+            <>
+              <div
+                style={{ zIndex: 10001, left: 0 }}
+                className="position-sticky d-flex flex-column align-items-center
+                justify-content-center mt-2 p-3 bg-success h-100 w-100 me-3"
+              >
+                <h4 className="text-center text-white"> New Releases</h4>
+              </div>
+              {newReleases.map((track, index) => {
+                return (
+                  <div style={{ display: 'inline-block' }} key={index}>
+                    <TrackMusicCard
+                      track={track}
+                      key={index}
+                      selectTrack={selectTrack}
+                    />
+                  </div>
+                );
+              })}
+            </>
+          )}
+        </HorizontalScroll>
+      </div>
+
+      <div className="px-5 my-4">
+        Welcome to <strong>Music.ant</strong>, your ultimate destination for
+        searching and playing your favorite tracks seamlessly. Built with the
+        latest web technologies, Music.ant leverages the power of the Spotify
+        API and modern React frameworks to deliver a smooth and engaging music
+        experience.
+        <br />
+        <br />
+        <h5> Key Features:</h5>
+        <ul>
+          <li>
+            <strong>Track Search:</strong> Effortlessly search for songs,
+            artists, and albums using the extensive Spotify music library.
+          </li>
+          <li>
+            <strong>Instant Playback:</strong> Enjoy instant playback of tracks
+            directly within the app.
+          </li>
+          <li>
+            <strong>User-Friendly Interface:</strong> Navigate through a clean
+            and intuitive interface designed for an enjoyable user experience.
+          </li>
+        </ul>
+        <br />
+        <h5> How It Works:</h5>
+        <strong>You must have Spotify Premium Account. </strong>
+        <br />
+        Music.ant connects to the Spotify API display a wide range of tracks
+        based on your search queries. Simply login to your Spotify account and
+        type in the name of the song or artist you`re looking for, and Music.ant
+        will do the rest. Click on any track to start playing it instantly using
+        Spotify web player.
+      </div>
     </div>
   );
 }
 
 Home.propTypes = {
   accessToken: PropTypes.string,
-  results: PropTypes.array,
   setAccessToken: PropTypes.func,
   setRefreshToken: PropTypes.func,
   setExpiresIn: PropTypes.func,

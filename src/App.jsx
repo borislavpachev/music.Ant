@@ -1,25 +1,26 @@
 import Header from './components/Header/Header';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './views/Home/Home';
-import Profile from './views/Profile/Profile';
 import ErrorPage from './views/ErrorPage/ErrorPage';
+import Profile from './views/Profile/Profile';
 import { useContext, useEffect, useState } from 'react';
+import { AppContext } from './contexts/AppContext';
 import { ThemeContext } from './contexts/theme';
-import About from './views/About/About';
 import { getUserData, refreshAccessToken } from './services/auth.service';
 import { spotifyApi } from './services/spotify.service';
-import { getSearchResults } from './services/music.service';
 import toast, { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Search from './views/Search/Search';
+import MusicPlayer from './components/MusicPlayer/MusicPlayer';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
+  const [{ setSearch, currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
+    useContext(AppContext);
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [expiresIn, setExpiresIn] = useState(null);
   const [user, setUser] = useState(null);
-  const [search, setSearch] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -52,33 +53,6 @@ function App() {
         toast.error(error.message);
       });
   }, [accessToken]);
-
-  useEffect(() => {
-    if (!search || !accessToken) {
-      setSearchResults([]);
-      return;
-    }
-
-    getSearchResults(search)
-      .then((results) => {
-        setSearchResults(
-          results.map((track) => {
-            return {
-              artist: track.artists[0].name,
-              trackName: track.name,
-              uri: track.uri,
-              albumCover: track.album.images[0].url,
-            };
-          })
-        );
-      })
-      .catch((error) => {
-        if (error.message.includes('expired')) {
-          handleLogout();
-        }
-        toast.error(error.message);
-      });
-  }, [search, accessToken]);
 
   useEffect(() => {
     if (!refreshToken || !expiresIn) return;
@@ -114,19 +88,19 @@ function App() {
       <main className={`app bg-${theme.color} text-${theme.textColor}`}>
         <BrowserRouter>
           <Toaster />
-          <Header
-            user={user}
-            logout={handleLogout}
-            search={search}
-            setSearch={setSearch}
-          />
+          <Header user={user} logout={handleLogout} />
+          {currentlyPlayingTrack && (
+            <MusicPlayer
+              uri={currentlyPlayingTrack}
+              setTrack={setCurrentlyPlayingTrack}
+            />
+          )}
           <Routes>
             <Route
               index
               element={
                 <Home
                   accessToken={accessToken}
-                  results={searchResults}
                   setAccessToken={setAccessToken}
                   setRefreshToken={setRefreshToken}
                   setExpiresIn={setExpiresIn}
@@ -138,14 +112,19 @@ function App() {
               element={
                 <Home
                   accessToken={accessToken}
-                  results={searchResults}
                   setAccessToken={setAccessToken}
                   setRefreshToken={setRefreshToken}
                   setExpiresIn={setExpiresIn}
                 />
               }
             />
-            <Route path="/about" element={<About />} />
+            <Route
+              path="/search"
+              element={
+                <Search accessToken={accessToken} logout={handleLogout} />
+              }
+            />
+
             <Route
               path="/profile"
               element={<Profile token={accessToken} logout={handleLogout} />}
