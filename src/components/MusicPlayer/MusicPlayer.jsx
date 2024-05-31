@@ -22,7 +22,6 @@ export default function MusicPlayer({ uri, setTrack }) {
       <SpotifyPlayer
         token={token}
         play={true}
-        showSaveIcon={true}
         uris={uri ? [uri] : []}
         styles={{
           sliderColor: '#00B500',
