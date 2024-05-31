@@ -1,4 +1,5 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../contexts/AppContext';
 import { ThemeContext } from '../../contexts/theme';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
@@ -7,20 +8,32 @@ import SearchBar from '../SearchBar/SearchBar';
 import { PropTypes } from 'prop-types';
 import './Header.css';
 
-export default function Header({ user, logout, search, setSearch }) {
+export default function Header({ user, logout }) {
+  const [{ search, setSearch }] = useContext(AppContext);
   const [{ theme, isDark }] = useContext(ThemeContext);
+  const [query, setQuery] = useState('');
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (search && location.pathname !== '/') navigate('/');
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryParams = urlParams.get('query');
+    if (queryParams) {
+      setQuery(queryParams);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (search && location.pathname !== '/search') navigate('/search');
   }, [search, location.pathname, navigate]);
 
   useEffect(() => {
-    if (location.pathname !== '/' && location.pathname !== '/home') {
+    if (location.pathname !== '/search') {
       setSearch('');
+      setQuery('');
     }
-  }, [location.pathname]);
+  }, [location.pathname, setSearch]);
 
   return (
     <nav
@@ -31,7 +44,7 @@ export default function Header({ user, logout, search, setSearch }) {
     >
       <div className="container-fluid">
         <NavLink
-          to="/"
+          to="/home"
           onClick={() => setSearch('')}
           className="d-flex bg-light rounded align-items-center m-1"
         >
@@ -53,7 +66,7 @@ export default function Header({ user, logout, search, setSearch }) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarContent">
-          <SearchBar search={search} setSearch={setSearch} user={user} />
+          <SearchBar user={user} query={query} setQuery={setQuery} />
           <ul className="navbar-nav align-items-center justify-content-center gap-2">
             <li className="nav-item ms-4">
               {!user ? (
@@ -79,11 +92,6 @@ export default function Header({ user, logout, search, setSearch }) {
               </li>
             )}
             <li className="nav-item">
-              <NavLink to="/about" className="btn btn-secondary">
-                About
-              </NavLink>
-            </li>
-            <li className="nav-item">
               <ThemeSwitch />
             </li>
           </ul>
@@ -96,6 +104,4 @@ export default function Header({ user, logout, search, setSearch }) {
 Header.propTypes = {
   user: PropTypes.object,
   logout: PropTypes.func,
-  search: PropTypes.string,
-  setSearch: PropTypes.func,
 };
