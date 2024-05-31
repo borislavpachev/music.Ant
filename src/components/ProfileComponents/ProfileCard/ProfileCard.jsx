@@ -14,10 +14,10 @@ export default function ProfileCard({ user }) {
           borderRadius: '50%',
         }}
       />
-      <div className="d-flex flex-column align-items-center mx-3">
-        <p className="fs-4">{user.display_name}</p>
-        <p>Country: {user.country}</p>
-        <p>Followers: {user.followers.total}</p>
+      <div className="d-flex flex-column align-items-center mx-3 text-white">
+        <h3>{user.display_name}</h3>
+        <span style={{ whiteSpace: 'nowrap' }}>Country: {user.country}</span>
+        <span>Followers: {user.followers.total}</span>
       </div>
     </div>
   );
