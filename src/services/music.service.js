@@ -1,8 +1,8 @@
 import { spotifyApi } from './spotify.service';
 
-export const getSearchResults = async (search) => {
+export const getSearchResults = async (searchParam) => {
   return spotifyApi
-    .searchTracks(search, { limit: 20 })
+    .searchTracks(searchParam, { limit: 20 })
     .then((res) => {
       const results = res.body.tracks.items;
       return results;
