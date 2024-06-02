@@ -27,6 +27,7 @@ export default function MusicPlayer({ uri, setTrack }) {
           sliderColor: '#00B500',
           bgColor: isDark ? '#343a40' : '#f8f9fa',
           color: isDark ? '#f8f9fa' : '#343a40',
+          trackNameColor: isDark ? '#f8f9fa' : '#343a40',
         }}
       />
       <span
