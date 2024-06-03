@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { getMyPlaylists } from '../../../services/music.service';
 import HorizontalScroll from '../../../hoc/HorizontalScroll';
-import PlaylistCard from '../../PlaylistCard/PlaylistCard';
+import PlaylistMiniCard from '../../PlaylistMiniCard/PlaylistMiniCard';
 
 export default function UserPlaylists({ token }) {
   const [playlists, setPlaylists] = useState(null);
@@ -17,6 +17,7 @@ export default function UserPlaylists({ token }) {
               name: playlist.name,
               tracksCount: playlist.tracks.total,
               uri: playlist.uri,
+              id: playlist.id,
             };
           })
         );
@@ -35,7 +36,7 @@ export default function UserPlaylists({ token }) {
           {playlists.map((playlist, index) => {
             return (
               <div key={index} style={{ display: 'inline-block' }}>
-                <PlaylistCard playlist={playlist} />
+                <PlaylistMiniCard playlist={playlist} />
               </div>
             );
           })}
