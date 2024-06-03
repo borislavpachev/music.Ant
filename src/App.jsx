@@ -12,6 +12,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Search from './views/Search/Search';
 import MusicPlayer from './components/MusicPlayer/MusicPlayer';
+import Playlist from './views/Playlist/Playlist';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
@@ -128,6 +129,10 @@ function App() {
             <Route
               path="/profile"
               element={<Profile token={accessToken} logout={handleLogout} />}
+            />
+            <Route
+              path="/playlist/:id"
+              element={<Playlist token={accessToken} />}
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
