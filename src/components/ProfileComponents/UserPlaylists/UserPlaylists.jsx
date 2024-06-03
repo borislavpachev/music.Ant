@@ -16,6 +16,7 @@ export default function UserPlaylists({ token }) {
               image: playlist.images[0].url,
               name: playlist.name,
               tracksCount: playlist.tracks.total,
+              uri: playlist.uri,
             };
           })
         );

@@ -2,9 +2,12 @@ import { PropTypes } from 'prop-types';
 import { useContext } from 'react';
 import { ThemeContext } from '../../contexts/theme';
 import CustomTooltip from '../CustomTooltip/CustomTooltip';
+import { CiPlay1 } from 'react-icons/ci';
+import { AppContext } from '../../contexts/AppContext';
 
 export default function PlaylistCard({ playlist }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
+  const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
 
   return (
     <>
@@ -20,11 +23,11 @@ export default function PlaylistCard({ playlist }) {
         <img
           src={`${playlist.image}`}
           alt="playlist"
-          style={{ height: '110px', width: '130px' }}
+          style={{ height: '90px', width: '110px' }}
           className="my-1"
         />
-        <div className="d-flex align-items-start w-100 ms-3">
-          <div>
+        <div className="d-flex w-100 px-1">
+          <div className="w-100">
             <span
               style={{
                 overflow: 'hidden',
@@ -37,7 +40,20 @@ export default function PlaylistCard({ playlist }) {
                 font={'18px'}
               />
             </span>
-            <p>Tracks: {playlist.tracksCount}</p>
+            <div
+              style={{ whiteSpace: 'nowrap' }}
+              className="d-flex align-items-center 
+              justify-content-between"
+            >
+              <span>Tracks: {playlist.tracksCount}</span>
+              <button
+                className="btn btn-success justify-content-center align-items-center
+              "
+                onClick={() => setCurrentlyPlayingTrack(playlist.uri)}
+              >
+                <CiPlay1 className="fs-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
