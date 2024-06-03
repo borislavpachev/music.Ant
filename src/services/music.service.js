@@ -43,6 +43,20 @@ export const getMyPlaylists = async (token) => {
     });
 };
 
+export const getSinglePlaylist = async (token, playlist) => {
+  if (!token) return;
+  spotifyApi.setAccessToken(token);
+  return spotifyApi
+    .getPlaylist(playlist)
+    .then((data) => {
+      let playlistInfo = data.body;
+      return playlistInfo;
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
 export const getNewReleases = async (token) => {
   if (!token) return;
   spotifyApi.setAccessToken(token);
