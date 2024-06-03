@@ -1,66 +1,69 @@
 import { PropTypes } from 'prop-types';
 import { useContext } from 'react';
+import { CiClock2 } from 'react-icons/ci';
 import { ThemeContext } from '../../contexts/theme';
-import CustomTooltip from '../CustomTooltip/CustomTooltip';
-import { CiPlay1 } from 'react-icons/ci';
-import { AppContext } from '../../contexts/AppContext';
 
-export default function PlaylistCard({ playlist }) {
+export default function PlaylistCard({ track, index }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
-  const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
+
+  const millisecondsToMinutes = (timeInMilliseconds) => {
+    const minutes = Math.floor(timeInMilliseconds / 1000 / 60);
+    const seconds = Math.floor((timeInMilliseconds / 1000) % 60);
+    return `${minutes}:${seconds}`;
+  };
 
   return (
-    <>
+    <div
+      className={`card d-flex my-1 border
+    ${
+      isDark
+        ? `bg-${theme.color} text-${theme.textColor}`
+        : `bg-${theme.color} text-${theme.textColor}`
+    }`}
+    >
       <div
-        className={`card align-items-center mx-2 my-1
-      ${
-        isDark
-          ? `profile-dark  bg-${theme.color} text-${theme.textColor}`
-          : `profile-light bg-${theme.color} text-${theme.textColor}`
-      }`}
-        style={{ width: '10.5rem', height: '10.5rem' }}
+        className="card-body d-flex text-center
+        align-items-center justify-content-between"
       >
+        <p className="col-1"># {index + 1}</p>
         <img
-          src={`${playlist.image}`}
-          alt="playlist"
-          style={{ height: '90px', width: '110px' }}
-          className="my-1"
+          className="col-2"
+          src={`${track.album.images[0].url}`}
+          alt="album-cover"
+          style={{ width: '75px', height: '75px' }}
         />
-        <div className="d-flex w-100 px-1">
-          <div className="w-100">
-            <span
-              style={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              <CustomTooltip
-                text={playlist.name}
-                tooltipText={playlist.name}
-                font={'18px'}
-              />
-            </span>
-            <div
-              style={{ whiteSpace: 'nowrap' }}
-              className="d-flex align-items-center 
-              justify-content-between"
-            >
-              <span>Tracks: {playlist.tracksCount}</span>
-              <button
-                className="btn btn-success justify-content-center align-items-center
-              "
-                onClick={() => setCurrentlyPlayingTrack(playlist.uri)}
-              >
-                <CiPlay1 className="fs-5" />
-              </button>
-            </div>
-          </div>
-        </div>
+        <p
+          className="col-4"
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <strong>{track.name}</strong>
+        </p>
+        <p>{track.artists[0].name}</p>
+        <p className="col-4">
+          <span
+            className="fst-italic"
+            style={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {track.album.name}
+          </span>
+        </p>
+        <p className="col-1 d-flex align-items-center">
+          <CiClock2 className="fs-4 me-1" />
+          {millisecondsToMinutes(track.duration_ms)}
+        </p>
       </div>
-    </>
+    </div>
   );
 }
 
 PlaylistCard.propTypes = {
-  playlist: PropTypes.object,
+  track: PropTypes.object,
+  index: PropTypes.number,
 };
