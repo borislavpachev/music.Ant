@@ -2,8 +2,8 @@ import { PropTypes } from 'prop-types';
 import { useContext } from 'react';
 import { CiClock2 } from 'react-icons/ci';
 import { ThemeContext } from '../../contexts/theme';
-import './PlaylistCard.css';
 import { AppContext } from '../../contexts/AppContext';
+import './PlaylistCard.css';
 
 export default function PlaylistCard({ track, index }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
@@ -20,19 +20,16 @@ export default function PlaylistCard({ track, index }) {
     setCurrentlyPlayingTrack(track.uri);
   };
 
-  const custom = currentlyPlayingTrack?.includes(track.id)
+  const custom = currentlyPlayingTrack?.includes(track?.id)
     ? 'custom-style'
-    : null;
+    : isDark && `bg-${theme.color} text-${theme.textColor}`;
 
   return (
     <div
       style={{ cursor: 'pointer' }}
-      className={`card d-flex my-1 border ${custom}
-      ${
-        isDark
-          ? `bg-${theme.color} text-${theme.textColor}`
-          : `bg-${theme.color} text-${theme.textColor}`
-      }`}
+      className={`card d-flex my-1 border 
+       ${custom}
+       `}
       onClick={handlePlay}
     >
       <div
