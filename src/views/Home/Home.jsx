@@ -15,7 +15,7 @@ export default function Home({
   setExpiresIn,
 }) {
   const [newReleases, setNewReleases] = useState(null);
-  const [{setCurrentlyPlayingTrack}] = useContext(AppContext);
+  const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,8 +90,8 @@ export default function Home({
 
   return (
     <div
-      className={` d-flex flex-column justify-content-center
-       align-items-center fs-5 my-5
+      className={`custom-scroll row justify-content-center
+       align-items-center fs-5 py-5 
     `}
     >
       <div className="w-100 align-items-center justify-content-center">
@@ -109,7 +109,7 @@ export default function Home({
               <div
                 style={{ zIndex: 10001, left: 0 }}
                 className="position-sticky d-flex flex-column align-items-center
-                justify-content-center mt-2 p-3 bg-success h-100 w-100 me-3"
+                justify-content-center mt-2 p-3 bg-success me-3"
               >
                 <h4 className="text-center text-white"> New Releases</h4>
               </div>

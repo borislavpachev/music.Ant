@@ -11,6 +11,7 @@ export default function Playlist({ token }) {
   const [playlist, setPlaylist] = useState(null);
   const [{ theme, isDark }] = useContext(ThemeContext);
   const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -20,10 +21,10 @@ export default function Playlist({ token }) {
   }, [token, id]);
 
   return (
-    <div className="w-100 h-100">
+    <div className="custom-scroll w-100">
       {playlist && (
         <div
-          className={`card m-4 border
+          className={`card m-3 border
         ${
           isDark
             ? `bg-${theme.color} text-${theme.textColor}`
@@ -52,8 +53,8 @@ export default function Playlist({ token }) {
               </button>
             </div>
           </div>
-          <hr className="mx-4" />
-          <div className="row h-75 px-4">
+          <div className="border border-secondary mx-3 mb-3"></div>
+          <div className="w-100 px-2">
             {playlist.tracks.items.map((track, index) => {
               return (
                 <PlaylistCard key={index} track={track.track} index={index} />

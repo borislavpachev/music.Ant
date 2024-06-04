@@ -26,3 +26,8 @@ body {
   background-color: #198754;
   width: 5px;
 }
+
+.custom-scroll {
+  overflow: auto;
+  height: calc(100vh - 89px);
+}

@@ -67,7 +67,7 @@ export default function Search({ accessToken, logout }) {
           </div>
         </div>
       ) : (
-        <div className="row align-items-center justify-content-center">
+        <div className="custom-scroll row align-items-center justify-content-center">
           {searchResults.map((result, index) => {
             return (
               <TrackMusicCard
