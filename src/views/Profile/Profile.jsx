@@ -25,12 +25,12 @@ export default function Profile({ token, logout }) {
   return (
     <>
       {user ? (
-        <div className="w-100 h-100 align-items-center">
-          <div className="d-flex px-1 mx-4 my-1 gap-4">
+        <div className="custom-scroll w-100 h-100 align-items-center">
+          <div className="d-flex px-1 mx-4 my-2 mb-4 gap-4">
             <ProfileCard user={user} />
-            <UserPlaylists token={token} />
+            <UserPlaylists />
           </div>
-          <UserTopTracks token={token} />
+          <UserTopTracks />
         </div>
       ) : (
         <div

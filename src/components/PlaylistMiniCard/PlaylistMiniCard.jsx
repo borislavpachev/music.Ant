@@ -20,13 +20,13 @@ export default function PlaylistMiniCard({ playlist }) {
           ? `profile-dark  bg-${theme.color} text-${theme.textColor}`
           : `profile-light bg-${theme.color} text-${theme.textColor}`
       }`}
-        style={{ width: '12rem', height: '11rem' }}
+        style={{ width: '12rem', height: '13.5rem' }}
       >
         <img
           src={`${playlist.image}`}
           alt="playlist"
-          style={{ height: '100px', width: '115px' }}
-          className="my-1"
+          style={{ height: '125px', width: '150px' }}
+          className="my-2"
         />
         <div className="d-flex w-100 px-1">
           <div className="w-100">
@@ -45,10 +45,10 @@ export default function PlaylistMiniCard({ playlist }) {
             <div
               style={{ whiteSpace: 'nowrap' }}
               className="d-flex align-items-center 
-              justify-content-between"
+              justify-content-between mt-1"
             >
               <span>Tracks: {playlist.tracksCount}</span>
-              <div className='d-flex gap-1'>
+              <div className="d-flex gap-1">
                 <button
                   onClick={() => navigate(`/playlist/${playlist.id}`)}
                   className="btn btn-primary px-2 justify-content-center align-items-center"
