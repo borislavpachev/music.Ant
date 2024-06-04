@@ -5,7 +5,7 @@ import { getSearchResults } from '../../services/music.service';
 import { AppContext } from '../../contexts/AppContext';
 import toast from 'react-hot-toast';
 
-export default function Search({ accessToken, logout }) {
+export default function Search({ logout }) {
   const [
     {
       search,
@@ -30,7 +30,7 @@ export default function Search({ accessToken, logout }) {
       return;
     }
 
-    getSearchResults(accessToken, search)
+    getSearchResults(search)
       .then((results) => {
         setSearchResults(
           results.map((track) => {
@@ -49,7 +49,7 @@ export default function Search({ accessToken, logout }) {
         }
         toast.error(error.message);
       });
-  }, [search, accessToken]);
+  }, [search]);
 
   const selectTrack = (track) => {
     setCurrentlyPlayingTrack(track);
@@ -84,9 +84,5 @@ export default function Search({ accessToken, logout }) {
 }
 
 Search.propTypes = {
-  accessToken: PropTypes.string,
-  setAccessToken: PropTypes.func,
-  setRefreshToken: PropTypes.func,
-  setExpiresIn: PropTypes.func,
   logout: PropTypes.func,
 };

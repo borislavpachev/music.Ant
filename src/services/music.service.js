@@ -1,9 +1,6 @@
 import { spotifyApi } from './spotify.service';
 
-export const getSearchResults = async (token, searchParam) => {
-  if (!token) return;
-  spotifyApi.setAccessToken(token);
-
+export const getSearchResults = async (searchParam) => {
   return spotifyApi
     .searchTracks(searchParam, { limit: 20 })
     .then((res) => {
@@ -15,9 +12,7 @@ export const getSearchResults = async (token, searchParam) => {
     });
 };
 
-export const getMyTopTracks = async (token) => {
-  if (!token) return;
-  spotifyApi.setAccessToken(token);
+export const getMyTopTracks = async () => {
   return spotifyApi
     .getMyTopTracks()
     .then((data) => {
@@ -29,9 +24,7 @@ export const getMyTopTracks = async (token) => {
     });
 };
 
-export const getMyPlaylists = async (token) => {
-  if (!token) return;
-  spotifyApi.setAccessToken(token);
+export const getMyPlaylists = async () => {
   return spotifyApi
     .getUserPlaylists()
     .then((data) => {
@@ -46,6 +39,7 @@ export const getMyPlaylists = async (token) => {
 export const getSinglePlaylist = async (token, playlist) => {
   if (!token) return;
   spotifyApi.setAccessToken(token);
+
   return spotifyApi
     .getPlaylist(playlist)
     .then((data) => {
@@ -60,6 +54,7 @@ export const getSinglePlaylist = async (token, playlist) => {
 export const getNewReleases = async (token) => {
   if (!token) return;
   spotifyApi.setAccessToken(token);
+
   return spotifyApi
     .getNewReleases({ limit: 10 })
     .then((data) => {

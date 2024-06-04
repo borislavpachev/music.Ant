@@ -1,30 +1,34 @@
 import { useContext, useEffect, useState } from 'react';
 import { getMyTopTracks } from '../../../services/music.service';
 import TrackMusicCard from '../../TrackMusicCard/TrackMusicCard';
-import { PropTypes } from 'prop-types';
 import HorizontalScroll from '../../../hoc/HorizontalScroll';
 import { AppContext } from '../../../contexts/AppContext';
+import toast from 'react-hot-toast';
 
-export default function UserTopTracks({ token }) {
+export default function UserTopTracks() {
   const [userTopTracks, setUserTopTracks] = useState(null);
   const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
 
   useEffect(() => {
-    getMyTopTracks(token).then((data) => {
-      if (data) {
-        setUserTopTracks(
-          data.map((track) => {
-            return {
-              artist: track.artists[0].name,
-              trackName: track.name,
-              uri: track.uri,
-              albumCover: track.album.images[0].url,
-            };
-          })
-        );
-      }
-    });
-  }, [token]);
+    getMyTopTracks()
+      .then((data) => {
+        if (data) {
+          setUserTopTracks(
+            data.map((track) => {
+              return {
+                artist: track.artists[0].name,
+                trackName: track.name,
+                uri: track.uri,
+                albumCover: track.album.images[0].url,
+              };
+            })
+          );
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  }, []);
 
   const selectTrack = (track) => {
     setCurrentlyPlayingTrack(track);
@@ -32,7 +36,7 @@ export default function UserTopTracks({ token }) {
 
   return (
     <>
-      <HorizontalScroll styleClasses={'d-flex mx-4 my-1'}>
+      <HorizontalScroll styleClasses={'d-flex mx-4'}>
         {!userTopTracks ? (
           <div
             className="container justify-self-center
@@ -60,7 +64,3 @@ export default function UserTopTracks({ token }) {
     </>
   );
 }
-
-UserTopTracks.propTypes = {
-  token: PropTypes.string,
-};

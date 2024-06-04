@@ -1,29 +1,33 @@
 import { useEffect, useState } from 'react';
-import { PropTypes } from 'prop-types';
 import { getMyPlaylists } from '../../../services/music.service';
 import HorizontalScroll from '../../../hoc/HorizontalScroll';
 import PlaylistMiniCard from '../../PlaylistMiniCard/PlaylistMiniCard';
+import toast from 'react-hot-toast';
 
-export default function UserPlaylists({ token }) {
+export default function UserPlaylists() {
   const [playlists, setPlaylists] = useState(null);
 
   useEffect(() => {
-    getMyPlaylists(token).then((data) => {
-      if (data) {
-        setPlaylists(
-          data.map((playlist) => {
-            return {
-              image: playlist.images[0].url,
-              name: playlist.name,
-              tracksCount: playlist.tracks.total,
-              uri: playlist.uri,
-              id: playlist.id,
-            };
-          })
-        );
-      }
-    });
-  }, [token]);
+    getMyPlaylists()
+      .then((data) => {
+        if (data) {
+          setPlaylists(
+            data.map((playlist) => {
+              return {
+                image: playlist.images[0].url,
+                name: playlist.name,
+                tracksCount: playlist.tracks.total,
+                uri: playlist.uri,
+                id: playlist.id,
+              };
+            })
+          );
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  }, []);
 
   return (
     <>
@@ -45,7 +49,3 @@ export default function UserPlaylists({ token }) {
     </>
   );
 }
-
-UserPlaylists.propTypes = {
-  token: PropTypes.string,
-};
