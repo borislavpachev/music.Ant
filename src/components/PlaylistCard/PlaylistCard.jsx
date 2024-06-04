@@ -20,7 +20,7 @@ export default function PlaylistCard({ track, index }) {
     setCurrentlyPlayingTrack(track.uri);
   };
 
-  const custom = currentlyPlayingTrack.includes(track.id)
+  const custom = currentlyPlayingTrack?.includes(track.id)
     ? 'custom-style'
     : null;
 
