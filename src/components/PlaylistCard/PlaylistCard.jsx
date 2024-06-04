@@ -2,9 +2,13 @@ import { PropTypes } from 'prop-types';
 import { useContext } from 'react';
 import { CiClock2 } from 'react-icons/ci';
 import { ThemeContext } from '../../contexts/theme';
+import './PlaylistCard.css';
+import { AppContext } from '../../contexts/AppContext';
 
 export default function PlaylistCard({ track, index }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
+  const [{ currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
+    useContext(AppContext);
 
   const millisecondsToMinutes = (timeInMilliseconds) => {
     const minutes = Math.floor(timeInMilliseconds / 1000 / 60);
@@ -12,14 +16,24 @@ export default function PlaylistCard({ track, index }) {
     return `${minutes}:${seconds}`;
   };
 
+  const handlePlay = () => {
+    setCurrentlyPlayingTrack(track.uri);
+  };
+
+  const custom = currentlyPlayingTrack.includes(track.id)
+    ? 'custom-style'
+    : null;
+
   return (
     <div
-      className={`card d-flex my-1 border
-    ${
-      isDark
-        ? `bg-${theme.color} text-${theme.textColor}`
-        : `bg-${theme.color} text-${theme.textColor}`
-    }`}
+      style={{ cursor: 'pointer' }}
+      className={`card d-flex my-1 border ${custom}
+      ${
+        isDark
+          ? `bg-${theme.color} text-${theme.textColor}`
+          : `bg-${theme.color} text-${theme.textColor}`
+      }`}
+      onClick={handlePlay}
     >
       <div
         className="card-body d-flex text-center
@@ -64,6 +78,7 @@ export default function PlaylistCard({ track, index }) {
 }
 
 PlaylistCard.propTypes = {
+  currentlyPlaying: PropTypes.string,
   track: PropTypes.object,
   index: PropTypes.number,
 };
