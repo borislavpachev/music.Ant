@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
 import { getSinglePlaylist } from '../../services/music.service';
 import { AppContext } from '../../contexts/AppContext';
 import { ThemeContext } from '../../contexts/theme';
 import { CiPlay1 } from 'react-icons/ci';
 import PlaylistCard from '../../components/PlaylistCard/PlaylistCard';
+import { PropTypes } from 'prop-types';
+import toast from 'react-hot-toast';
 
 export default function Playlist({ token }) {
   const [playlist, setPlaylist] = useState(null);
@@ -15,14 +16,22 @@ export default function Playlist({ token }) {
   const { id } = useParams();
 
   useEffect(() => {
-    getSinglePlaylist(token, id).then((data) => {
-      setPlaylist(data);
-    });
+    getSinglePlaylist(token, id)
+      .then((data) => {
+        setPlaylist(data);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   }, [token, id]);
 
   return (
     <div className="custom-scroll w-100">
-      {playlist && (
+      {!playlist ? (
+        <div className="border rounded text-center m-5 p-5 fs-2">
+          No Playlist
+        </div>
+      ) : (
         <div
           className={`card m-3 border
         ${
