@@ -21,10 +21,10 @@ export default function TrackMusicCard({ track, selectTrack }) {
         <img
           src={`${track.albumCover}`}
           alt="cover"
-          className="py-2"
+          className="img-fluid py-3"
           style={{
-            height: '220px',
-            width: '250px',
+            height: '250px',
+            width: '230px',
           }}
         />
         <div

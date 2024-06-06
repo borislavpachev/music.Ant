@@ -57,7 +57,7 @@ export default function Search({ logout }) {
 
   return (
     <div
-      className={`d-flex flex-column justify-content-center align-items-center
+      className={`container d-flex flex-column justify-content-center align-items-center
   `}
     >
       {searchResults.length === 0 ? (
