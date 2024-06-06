@@ -1,18 +1,18 @@
-import Header from './components/Header/Header';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './views/Home/Home';
-import ErrorPage from './views/ErrorPage/ErrorPage';
-import Profile from './views/Profile/Profile';
 import { useContext, useEffect, useState } from 'react';
-import { AppContext } from './contexts/AppContext';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeContext } from './contexts/theme';
-import { getUserData, refreshAccessToken } from './services/auth.service';
+import { AppContext } from './contexts/AppContext';
+import Header from './components/Header/Header';
+import MusicPlayer from './components/MusicPlayer/MusicPlayer';
+import Home from './views/Home/Home';
+import Search from './views/Search/Search';
+import Profile from './views/Profile/Profile';
+import Playlist from './views/Playlist/Playlist';
+import ErrorPage from './views/ErrorPage/ErrorPage';
+import { getUserData } from './services/auth.service';
 import { spotifyApi } from './services/spotify.service';
 import toast, { Toaster } from 'react-hot-toast';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Search from './views/Search/Search';
-import MusicPlayer from './components/MusicPlayer/MusicPlayer';
-import Playlist from './views/Playlist/Playlist';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
@@ -37,16 +37,7 @@ function App() {
 
   useEffect(() => {
     if (!accessToken) return;
-    try {
-      spotifyApi.setAccessToken(accessToken);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }, [accessToken]);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    getUserData(accessToken, handleLogout)
+    getUserData(accessToken)
       .then((data) => {
         setUser(data);
       })
@@ -56,21 +47,34 @@ function App() {
   }, [accessToken]);
 
   useEffect(() => {
-    if (!refreshToken || !expiresIn) return;
+    if (!accessToken) return;
+    try {
+      spotifyApi.setAccessToken(accessToken);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }, [accessToken]);
 
-    const interval = setInterval(() => {
-      refreshAccessToken(refreshToken)
-        .then((data) => {
-          setAccessToken(data.access_token);
-          setExpiresIn(data.expires_in);
-          localStorage.setItem('accessToken', data.access_token);
-          localStorage.setItem('expiresIn', data.expires_in);
-        })
-        .catch((error) => toast.error(error.message));
-    }, (expiresIn - 60) * 1000);
+  // useEffect(() => {
+  //   if (!refreshToken || !expiresIn) return;
 
-    return () => clearInterval(interval);
-  }, [refreshToken, expiresIn]);
+  //   const interval = setInterval(() => {
+  //     refreshAccessToken(refreshToken)
+  //       .then((data) => {
+  //         console.log(data);
+  //         setAccessToken(data.access_token);
+  //         setExpiresIn(61);
+
+  //         localStorage.setItem('accessToken', data.access_token);
+  //         localStorage.setItem('expiresIn', 61);
+  //       })
+  //       .catch((error) => {
+  //         toast.error(error.message);
+  //       });
+  //   }, (expiresIn - 60) * 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [refreshToken, expiresIn]);
 
   const handleLogout = () => {
     setAccessToken(null);
@@ -92,6 +96,7 @@ function App() {
           <Header user={user} logout={handleLogout} />
           {currentlyPlayingTrack && (
             <MusicPlayer
+              token={accessToken}
               uri={currentlyPlayingTrack}
               setTrack={setCurrentlyPlayingTrack}
             />
@@ -125,7 +130,6 @@ function App() {
                 <Search accessToken={accessToken} logout={handleLogout} />
               }
             />
-
             <Route
               path="/profile"
               element={<Profile token={accessToken} logout={handleLogout} />}
