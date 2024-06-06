@@ -1,17 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { PropTypes } from 'prop-types';
 import './MusicPlayer.css';
 import { ThemeContext } from '../../contexts/theme';
 
-export default function MusicPlayer({ uri, setTrack }) {
+export default function MusicPlayer({ token, uri, setTrack }) {
   const [{ isDark }] = useContext(ThemeContext);
-  const [token, setToken] = useState(null);
-
-  useEffect(() => {
-    let authToken = localStorage.getItem('accessToken');
-    setToken(authToken);
-  }, []);
 
   if (!token) return;
   return (
@@ -42,6 +36,7 @@ export default function MusicPlayer({ uri, setTrack }) {
 }
 
 MusicPlayer.propTypes = {
+  token: PropTypes.string,
   uri: PropTypes.string,
   setTrack: PropTypes.func,
 };
