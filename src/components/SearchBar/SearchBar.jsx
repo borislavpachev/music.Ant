@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SearchBar({ user, query, setQuery }) {
   const [{ setSearch }] = useContext(AppContext);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setSearch(query);
@@ -22,14 +22,15 @@ export default function SearchBar({ user, query, setQuery }) {
   const handleClear = () => {
     setQuery('');
     setSearch('');
-    navigate('/search'); 
+    navigate('/search');
   };
 
-    return (
+  return (
     <div className="w-100">
       <form role="search">
         <input
           type="search"
+          id="general-search"
           className="form-control mx-2 my-2 fs-5"
           placeholder="Artists, Songs..."
           value={query}
@@ -41,10 +42,9 @@ export default function SearchBar({ user, query, setQuery }) {
       </form>
     </div>
   );
-
 }
 SearchBar.propTypes = {
   user: PropTypes.object,
-  query:PropTypes.string,
+  query: PropTypes.string,
   setQuery: PropTypes.func,
 };
