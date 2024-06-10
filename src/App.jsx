@@ -81,7 +81,6 @@ function App() {
     setAccessToken(null);
     setRefreshToken(null);
     setExpiresIn(null);
-    setSearch('');
     setUser(null);
 
     localStorage.removeItem('accessToken');
