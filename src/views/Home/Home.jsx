@@ -8,13 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { redirectUri } from '../../spotify.config';
 import toast from 'react-hot-toast';
 import Loader from '../../components/Loader/Loader';
+import HomeInfo from '../../components/HomeInfo/HomeInfo';
 
-export default function Home({
-  accessToken,
-  setAccessToken,
-  setRefreshToken,
-  setExpiresIn,
-}) {
+export default function Home({ accessToken, setAccessToken }) {
   const [newReleases, setNewReleases] = useState(null);
   const [loading, setLoading] = useState(false);
   const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
@@ -28,7 +24,7 @@ export default function Home({
       getToken(code);
       navigate('/');
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     setLoading(true);
@@ -78,8 +74,8 @@ export default function Home({
         localStorage.setItem('expiresIn', data.expires_in);
 
         setAccessToken(data.access_token);
-        setRefreshToken(data.refresh_token);
-        setExpiresIn(data.expires_in);
+        // setRefreshToken(data.refresh_token);
+        // setExpiresIn(data.expires_in);
       } else {
         console.error('Error fetching token:', data);
       }
@@ -138,122 +134,13 @@ export default function Home({
             )}
           </HorizontalScroll>
         </div>
-
-        <div className="px-5 my-4">
-          Welcome to <strong>Music.ant</strong>, your ultimate destination for
-          searching and playing your favorite tracks seamlessly. Built with the
-          latest web technologies, Music.ant leverages the power of the Spotify
-          API and modern React frameworks to deliver a smooth and engaging music
-          experience.
-          <br />
-          <br />
-          <h5> Key Features:</h5>
-          <ul>
-            <li>
-              <strong>Track Search:</strong> Effortlessly search for songs,
-              artists, and albums using the extensive Spotify music library.
-            </li>
-            <li>
-              <strong>Instant Playback:</strong> Enjoy instant playback of
-              tracks directly within the app.
-            </li>
-            <li>
-              <strong>User-Friendly Interface:</strong> Navigate through a clean
-              and intuitive interface designed for an enjoyable user experience.
-            </li>
-          </ul>
-          <br />
-          <h5> How It Works:</h5>
-          <strong>You must have Spotify Premium Account. </strong>
-          <br />
-          Music.ant connects to the Spotify API display a wide range of tracks
-          based on your search queries. Simply login to your Spotify account and
-          type in the name of the song or artist you`re looking for, and
-          Music.ant will do the rest. Click on any track to start playing it
-          instantly using Spotify web player.
-        </div>
+        <HomeInfo />
       </div>
     </div>
   );
-
-  // supposed to be responsive
-  // return (
-  //   <div className="container">
-  //     <div className="row justify-content-center align-items-center fs-5 py-2">
-  //       <div className="col-12 d-flex justify-content-center">
-  //         <HorizontalScroll styleClasses="d-flex">
-  //           {!newReleases ? (
-  //             <div className="bg-white rounded p-3 mx-3 w-100 text-center">
-  //               <img
-  //                 src="/ant_logo1.png"
-  //                 alt="logo"
-  //                 className="img-fluid"
-  //                 style={{ height: '70px', width: '70px' }}
-  //               />
-  //             </div>
-  //           ) : (
-  //             <>
-  //               <div
-  //                 style={{ zIndex: 10001, left: 0 }}
-  //                 className="position-sticky d-flex flex-column align-items-center justify-content-center mt-2 p-3 bg-success me-3"
-  //               >
-  //                 <h4 className="text-center text-white">New Releases</h4>
-  //               </div>
-  //               {newReleases.map((track, index) => (
-  //                 <div className="d-inline-block" key={index}>
-  //                   <TrackMusicCard
-  //                     track={track}
-  //                     key={index}
-  //                     selectTrack={selectTrack}
-  //                   />
-  //                 </div>
-  //               ))}
-  //             </>
-  //           )}
-  //         </HorizontalScroll>
-  //       </div>
-  //     </div>
-
-  //     <div className="px-5 my-4">
-  //       Welcome to <strong>Music.ant</strong>, your ultimate destination for
-  //       searching and playing your favorite tracks seamlessly. Built with the
-  //       latest web technologies, Music.ant leverages the power of the Spotify
-  //       API and modern React frameworks to deliver a smooth and engaging music
-  //       experience.
-  //       <br />
-  //       <br />
-  //       <h5>Key Features:</h5>
-  //       <ul>
-  //         <li>
-  //           <strong>Track Search:</strong> Effortlessly search for songs,
-  //           artists, and albums using the extensive Spotify music library.
-  //         </li>
-  //         <li>
-  //           <strong>Instant Playback:</strong> Enjoy instant playback of tracks
-  //           directly within the app.
-  //         </li>
-  //         <li>
-  //           <strong>User-Friendly Interface:</strong> Navigate through a clean
-  //           and intuitive interface designed for an enjoyable user experience.
-  //         </li>
-  //       </ul>
-  //       <br />
-  //       <h5>How It Works:</h5>
-  //       <strong>You must have a Spotify Premium Account.</strong>
-  //       <br />
-  //       Music.ant connects to the Spotify API to display a wide range of tracks
-  //       based on your search queries. Simply log in to your Spotify account and
-  //       type in the name of the song or artist you’re looking for, and Music.ant
-  //       will do the rest. Click on any track to start playing it instantly using
-  //       the Spotify web player.
-  //     </div>
-  //   </div>
-  // );
 }
 
 Home.propTypes = {
   accessToken: PropTypes.string,
   setAccessToken: PropTypes.func,
-  setRefreshToken: PropTypes.func,
-  setExpiresIn: PropTypes.func,
 };
