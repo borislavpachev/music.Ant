@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 
 export default function ProfileCard({ user }) {
   return (
-    <div className="card bg-success" style={{ width: '50%', height: 'auto' }}>
+    <div className="card bg-success" style={{ width: '40%', height: 'auto' }}>
       <div className="card-body d-flex align-items-center">
         <img
           src={`${user?.images[1].url}`}
