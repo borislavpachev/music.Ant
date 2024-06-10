@@ -19,6 +19,7 @@ function App() {
   const [{ currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
     useContext(AppContext);
   const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -32,11 +33,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!accessToken) return;
-
+    if (!accessToken) {
+      setLoading(false);
+      return;
+    }
     getUserData(accessToken, handleLogout)
       .then((data) => {
-        setUser(data);
+        if (data) {
+          setUser(data);
+          setLoading(false);
+        }
       })
       .catch((error) => {
         toast.error(error.message);
@@ -66,7 +72,7 @@ function App() {
       <main className={`app bg-${theme.color} text-${theme.textColor}`}>
         <BrowserRouter>
           <Toaster />
-          <Header user={user} logout={handleLogout} />
+          <Header user={user} logout={handleLogout} loading={loading} />
           {currentlyPlayingTrack && (
             <MusicPlayer
               token={accessToken}
