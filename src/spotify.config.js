@@ -1,5 +1,6 @@
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
 export const redirectUri = 'https://music-ant.vercel.app/';
+// export const redirectUri = 'http://localhost:5173/';
 
 export const scopes = [
   'streaming',
