@@ -16,23 +16,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
-  const [{ setSearch, currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
+  const [{ currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
     useContext(AppContext);
   const [accessToken, setAccessToken] = useState(null);
-  const [refreshToken, setRefreshToken] = useState(null);
-  const [expiresIn, setExpiresIn] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    const refreshing = localStorage.getItem('refreshToken');
-    const expires = localStorage.getItem('expiresIn');
+    // const refreshing = localStorage.getItem('refreshToken');
+    // const expires = localStorage.getItem('expiresIn');
 
     if (!token) return;
 
     setAccessToken(token);
-    setRefreshToken(refreshing);
-    setExpiresIn(expires);
   }, []);
 
   useEffect(() => {
@@ -56,36 +52,13 @@ function App() {
     }
   }, [accessToken]);
 
-  // useEffect(() => {
-  //   if (!refreshToken || !expiresIn) return;
-
-  //   const interval = setInterval(() => {
-  //     refreshAccessToken(refreshToken)
-  //       .then((data) => {
-  //         console.log(data);
-  //         setAccessToken(data.access_token);
-  //         setExpiresIn(61);
-
-  //         localStorage.setItem('accessToken', data.access_token);
-  //         localStorage.setItem('expiresIn', 61);
-  //       })
-  //       .catch((error) => {
-  //         toast.error(error.message);
-  //       });
-  //   }, (expiresIn - 60) * 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [refreshToken, expiresIn]);
-
   const handleLogout = () => {
     setAccessToken(null);
-    setRefreshToken(null);
-    setExpiresIn(null);
     setUser(null);
 
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('expiresIn');
+    // localStorage.removeItem('refreshToken');
+    // localStorage.removeItem('expiresIn');
   };
 
   return (
@@ -108,8 +81,6 @@ function App() {
                 <Home
                   accessToken={accessToken}
                   setAccessToken={setAccessToken}
-                  setRefreshToken={setRefreshToken}
-                  setExpiresIn={setExpiresIn}
                 />
               }
             />
@@ -119,8 +90,6 @@ function App() {
                 <Home
                   accessToken={accessToken}
                   setAccessToken={setAccessToken}
-                  setRefreshToken={setRefreshToken}
-                  setExpiresIn={setExpiresIn}
                 />
               }
             />
