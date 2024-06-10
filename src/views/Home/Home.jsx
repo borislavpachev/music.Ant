@@ -7,6 +7,7 @@ import { AppContext } from '../../contexts/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { redirectUri } from '../../spotify.config';
 import toast from 'react-hot-toast';
+import Loader from '../../components/Loader/Loader';
 
 export default function Home({
   accessToken,
@@ -15,6 +16,7 @@ export default function Home({
   setExpiresIn,
 }) {
   const [newReleases, setNewReleases] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -29,7 +31,9 @@ export default function Home({
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     getNewReleases(accessToken).then((data) => {
+      setLoading(false);
       if (data) {
         setNewReleases(
           data.map((release) => {
@@ -75,7 +79,7 @@ export default function Home({
 
         setAccessToken(data.access_token);
         setRefreshToken(data.refresh_token);
-        setExpiresIn(61);
+        setExpiresIn(data.expires_in);
       } else {
         console.error('Error fetching token:', data);
       }
@@ -88,6 +92,10 @@ export default function Home({
   const selectTrack = (track) => {
     setCurrentlyPlayingTrack(track);
   };
+
+  if (loading) {
+    return <Loader size="150px" />;
+  }
 
   return (
     <div className="container">
