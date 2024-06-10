@@ -1,10 +1,18 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const themeState = JSON.parse(localStorage.getItem('isDark'));
+    if (themeState !== null) {
+      setIsDark(themeState);
+    }
+  }, []);
+
   const theme = isDark
     ? {
         color: 'dark',
@@ -16,7 +24,11 @@ export const ThemeProvider = ({ children }) => {
       };
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    setIsDark((prevIsDark) => {
+      const newIsDark = !prevIsDark;
+      localStorage.setItem('isDark', newIsDark);
+      return newIsDark;
+    });
   };
 
   return (
