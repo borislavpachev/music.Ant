@@ -31,3 +31,19 @@ body {
   overflow: auto;
   height: calc(100vh - 89px);
 }
+
+@media (max-width: 768px) {
+  .card {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .card-body {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .track-title {
+    height: 40% !important;
+  }
+}
