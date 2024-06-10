@@ -6,24 +6,34 @@ import { ThemeContext } from '../../contexts/theme';
 import { CiPlay1 } from 'react-icons/ci';
 import PlaylistCard from '../../components/PlaylistCard/PlaylistCard';
 import { PropTypes } from 'prop-types';
+import Loader from '../../components/Loader/Loader';
 import toast from 'react-hot-toast';
 
 export default function Playlist({ token }) {
   const [playlist, setPlaylist] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [{ theme, isDark }] = useContext(ThemeContext);
   const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
 
   const { id } = useParams();
 
   useEffect(() => {
+    setLoading(true);
     getSinglePlaylist(token, id)
       .then((data) => {
-        setPlaylist(data);
+        setLoading(false);
+        if (data) {
+          setPlaylist(data);
+        }
       })
       .catch((error) => {
         toast.error(error.message);
       });
   }, [token, id]);
+
+  if (loading) {
+    return <Loader size="190px" />;
+  }
 
   return (
     <div className="custom-scroll w-100">

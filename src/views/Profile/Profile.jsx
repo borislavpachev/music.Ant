@@ -6,23 +6,33 @@ import { ThemeContext } from '../../contexts/theme';
 import ProfileCard from '../../components/ProfileComponents/ProfileCard/ProfileCard';
 import UserTopTracks from '../../components/ProfileComponents/UserTopTracks/UserTopTracks';
 import UserPlaylists from '../../components/ProfileComponents/UserPlaylists/UserPlaylists';
+import Loader from '../../components/Loader/Loader';
 import './Profile.css';
 
 export default function Profile({ token, logout }) {
   const [{ theme, isDark }] = useContext(ThemeContext);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (!token) return;
+    setLoading(true);
 
     getUserData(token, logout)
       .then((data) => {
-        setUser(data);
+        setLoading(false);
+        if (data) {
+          setUser(data);
+        }
       })
       .catch((error) => {
         toast.error(error.message);
       });
   }, [token]);
+
+  if (loading) {
+    return <Loader size="150px" />;
+  }
 
   return (
     <>
