@@ -25,15 +25,20 @@ export default function Header({ user, logout }) {
   }, []);
 
   useEffect(() => {
-    if (search && location.pathname !== '/search') navigate('/search');
+    if (search && location.pathname !== '/search') {
+      navigate('/search');
+    }
   }, [search, location.pathname, navigate]);
 
   useEffect(() => {
     if (location.pathname !== '/search') {
-      setSearch('');
       setQuery('');
+      setSearch('');
+      setTimeout(() => {
+        navigate(location.pathname);
+      }, 100);
     }
-  }, [location.pathname, setSearch]);
+  }, [location.pathname, setSearch, navigate]);
 
   return (
     <nav
@@ -45,7 +50,6 @@ export default function Header({ user, logout }) {
       <div className="container-fluid">
         <NavLink
           to="/home"
-          onClick={() => setSearch('')}
           className="d-flex bg-light rounded align-items-center m-1"
         >
           <img
