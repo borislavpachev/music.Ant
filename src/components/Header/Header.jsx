@@ -8,7 +8,7 @@ import SearchBar from '../SearchBar/SearchBar';
 import { PropTypes } from 'prop-types';
 import './Header.css';
 
-export default function Header({ user, logout, loading }) {
+export default function Header({ user, logout }) {
   const [{ search, setSearch }] = useContext(AppContext);
   const [{ theme, isDark }] = useContext(ThemeContext);
   const [query, setQuery] = useState('');
@@ -80,9 +80,7 @@ export default function Header({ user, logout, loading }) {
           <SearchBar user={user} query={query} setQuery={setQuery} />
           <ul className="navbar-nav align-items-center justify-content-center gap-2">
             <li className="nav-item ms-4">
-              {loading && !user ? (
-                <div className="spinner-border text-success"></div>
-              ) : !user ? (
+              {!user ? (
                 <Login />
               ) : (
                 <span className="fs-5 p-2">
@@ -117,5 +115,4 @@ export default function Header({ user, logout, loading }) {
 Header.propTypes = {
   user: PropTypes.object,
   logout: PropTypes.func,
-  loading: PropTypes.bool,
 };

@@ -16,10 +16,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
-  const [{ currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
+  const [{ setAppLoading, currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
     useContext(AppContext);
   const [accessToken, setAccessToken] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -32,14 +31,15 @@ function App() {
 
   useEffect(() => {
     if (!accessToken) {
-      setLoading(false);
+      setAppLoading(false);
       return;
     }
+    setAppLoading(true);
     getUserData(accessToken, handleLogout)
       .then((data) => {
         if (data) {
           setUser(data);
-          setLoading(false);
+          setAppLoading(false);
         }
       })
       .catch((error) => {
@@ -68,7 +68,7 @@ function App() {
       <main className={`app bg-${theme.color} text-${theme.textColor}`}>
         <BrowserRouter>
           <Toaster />
-          <Header user={user} logout={handleLogout} loading={loading} />
+          <Header user={user} logout={handleLogout} />
           {currentlyPlayingTrack && (
             <MusicPlayer
               token={accessToken}
