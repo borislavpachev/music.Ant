@@ -40,6 +40,13 @@ export default function Header({ user, logout }) {
     }
   }, [location.pathname, setSearch, navigate]);
 
+  const handleLogout = () => {
+    setQuery('');
+    setSearch('');
+    navigate('/');
+    logout();
+  };
+
   return (
     <nav
       className={`navbar navbar-expand-md d-flex align-items-center
@@ -90,7 +97,7 @@ export default function Header({ user, logout }) {
             </li>
             {user && (
               <li className="nav-item">
-                <button className="btn btn-danger" onClick={logout}>
+                <button className="btn btn-danger" onClick={handleLogout}>
                   Logout
                 </button>
               </li>
