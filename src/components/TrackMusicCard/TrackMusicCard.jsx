@@ -23,8 +23,8 @@ export default function TrackMusicCard({ track, selectTrack }) {
           alt="cover"
           className="py-2"
           style={{
-            height: '220px',
-            width: '250px',
+            minWidth: '250px',
+            maxHeight: '240px',
           }}
         />
         <div
@@ -47,7 +47,6 @@ export default function TrackMusicCard({ track, selectTrack }) {
               />
             </div>
             <p>{track.artist}</p>
-            {track.type ? <p>Type: {track.type}</p> : null}
           </div>
           <div className="h-100 m-1">
             <button
