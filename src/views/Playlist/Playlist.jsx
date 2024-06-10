@@ -44,18 +44,20 @@ export default function Playlist({ token }) {
             <img
               src={playlist.images[0].url}
               alt="cover"
-              style={{ width: '250px', height: '255px' }}
+              style={{ width: '250px', height: 'auto' }}
               className="w-25"
             />
             <div className="w-75 d-flex flex-column p-2 mx-3">
-              <p className="fs-3">
-                <strong>{playlist.name}</strong> by{' '}
-                {playlist.owner.display_name}
-              </p>
-              <p className="fst-italic fs-5">{playlist.description}</p>
-              <p className="fs-5">Tracks: {playlist.tracks.total}</p>
+              <div>
+                <p className="fs-3">
+                  <strong>{playlist.name}</strong> by{' '}
+                  {playlist.owner.display_name}
+                </p>
+                <p className="fst-italic fs-5">{playlist.description}</p>
+                <p className="fs-5">Tracks: {playlist.tracks.total}</p>
+              </div>
               <button
-                className="btn btn-success mt-5"
+                className="btn btn-success mt-auto"
                 onClick={() => setCurrentlyPlayingTrack(playlist.uri)}
               >
                 <CiPlay1 className="fs-3" />
