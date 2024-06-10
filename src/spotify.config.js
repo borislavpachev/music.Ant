@@ -1,5 +1,5 @@
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
-export const redirectUri = 'https://music-9qd1y6t9v-borislavs-projects-3027afe4.vercel.app/';
+export const redirectUri = 'https://music-ant.vercel.app/';
 
 export const scopes = [
   'streaming',
