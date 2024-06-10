@@ -24,8 +24,6 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    // const refreshing = localStorage.getItem('refreshToken');
-    // const expires = localStorage.getItem('expiresIn');
 
     if (!token) return;
 
@@ -63,8 +61,6 @@ function App() {
     setUser(null);
 
     localStorage.removeItem('accessToken');
-    // localStorage.removeItem('refreshToken');
-    // localStorage.removeItem('expiresIn');
   };
 
   return (
