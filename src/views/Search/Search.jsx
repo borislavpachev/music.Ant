@@ -1,9 +1,10 @@
 import { PropTypes } from 'prop-types';
 import TrackMusicCard from '../../components/TrackMusicCard/TrackMusicCard';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getSearchResults } from '../../services/music.service';
 import { AppContext } from '../../contexts/AppContext';
 import toast from 'react-hot-toast';
+import Loader from '../../components/Loader/Loader';
 
 export default function Search({ logout }) {
   const [
@@ -15,6 +16,7 @@ export default function Search({ logout }) {
       setCurrentlyPlayingTrack,
     },
   ] = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -22,26 +24,30 @@ export default function Search({ logout }) {
     if (queryParams) {
       setSearch(queryParams);
     }
-  }, []);
+  }, [setSearch]);
 
   useEffect(() => {
     if (!search) {
       setSearchResults([]);
       return;
     }
+    setLoading(true);
 
     getSearchResults(search)
       .then((results) => {
-        setSearchResults(
-          results.map((track) => {
-            return {
-              artist: track.artists[0].name,
-              trackName: track.name,
-              uri: track.uri,
-              albumCover: track.album.images[0].url,
-            };
-          })
-        );
+        setLoading(false);
+        if (results) {
+          setSearchResults(
+            results.map((track) => {
+              return {
+                artist: track.artists[0].name,
+                trackName: track.name,
+                uri: track.uri,
+                albumCover: track.album.images[0].url,
+              };
+            })
+          );
+        }
       })
       .catch((error) => {
         if (error.message.includes('expired')) {
@@ -54,6 +60,10 @@ export default function Search({ logout }) {
   const selectTrack = (track) => {
     setCurrentlyPlayingTrack(track);
   };
+
+  if (loading) {
+    return <Loader size="150px" />;
+  }
 
   return (
     <div
