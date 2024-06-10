@@ -12,7 +12,7 @@ export default function Login() {
 
     const codeChallenge = await generateCodeChallenge(codeVerifier);
     const id = import.meta.env.VITE_CLIENT_ID;
-console.log(id);
+
     const loginUrl = `${authEndpoint}?client_id=${id}&redirect_uri=${redirectUri}&scope=${scopes.join(
       '%20'
     )}&code_challenge_method=S256&code_challenge=${codeChallenge}&response_type=code&show_dialog=true`;
