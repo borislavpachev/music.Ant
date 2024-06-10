@@ -38,7 +38,6 @@ export default function Home({ accessToken, setAccessToken }) {
               trackName: release.name,
               uri: release.uri,
               albumCover: release.images[0].url,
-              type: release.album_type,
             };
           })
         );
@@ -70,12 +69,8 @@ export default function Home({ accessToken, setAccessToken }) {
 
       if (data) {
         localStorage.setItem('accessToken', data.access_token);
-        localStorage.setItem('refreshToken', data.refresh_token);
-        localStorage.setItem('expiresIn', data.expires_in);
 
         setAccessToken(data.access_token);
-        // setRefreshToken(data.refresh_token);
-        // setExpiresIn(data.expires_in);
       } else {
         console.error('Error fetching token:', data);
       }
