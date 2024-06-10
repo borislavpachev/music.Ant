@@ -18,7 +18,7 @@ export default function MusicPlayer({ token, uri, setTrack }) {
         play={true}
         uris={uri ? [uri] : []}
         styles={{
-          sliderColor: '#00B500',
+          sliderColor: '#28a745',
           bgColor: isDark ? '#343a40' : '#f8f9fa',
           color: isDark ? '#f8f9fa' : '#343a40',
           trackNameColor: isDark ? '#f8f9fa' : '#343a40',
