@@ -1,6 +1,6 @@
 import { redirectUri } from '../spotify.config';
 
-export const getUserData = async (token) => {
+export const getUserData = async (token, logout) => {
   try {
     const response = await fetch('https://api.spotify.com/v1/me', {
       headers: {
@@ -8,7 +8,11 @@ export const getUserData = async (token) => {
       },
     });
     const result = await response.json();
-    return result;
+    if (!response.ok) {
+      logout();
+    } else {
+      return result;
+    }
   } catch (error) {
     console.error(error.message);
   }

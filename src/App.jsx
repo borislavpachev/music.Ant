@@ -37,7 +37,8 @@ function App() {
 
   useEffect(() => {
     if (!accessToken) return;
-    getUserData(accessToken)
+
+    getUserData(accessToken, handleLogout)
       .then((data) => {
         setUser(data);
       })
