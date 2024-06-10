@@ -1,8 +1,24 @@
-# React + Vite
+# Music.Ant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Music.Ant is a React application built with Vite, leveraging the power of Bootstrap for styling and the Spotify API for music data. This app uses react-spotify-web-playback for music playback and react-spotify-node for interacting with the Spotify API.
 
-Currently, two official plugins are available:
+### Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Modern Frontend Stack: Built with Vite for a fast development experience.
+- Responsive Design: Styled with Bootstrap to ensure a responsive and attractive design.
+- Spotify Integration: Uses the Spotify API to fetch and display music data.
+- Playback Support: Integrates react-spotify-web-playback for seamless music playback.
+- Custom Themes: Easily switch between different themes.
+
+### Installation
+
+Clone the repository: https://github.com/borislavpachev/borislavpachev-musicAnt
+Install the dependencies: npm install
+Start the server : npm run dev
+Open your browser and visit http://localhost:5173.
+
+### Usage
+
+- Login with Spotify: Authenticate with your Spotify Premium account to start using the app.
+- Search and Play Music: Use the search functionality to find your favorite tracks and play them directly within the app.
+- Playlist experience: Listen your Spotify playlists within the app.
