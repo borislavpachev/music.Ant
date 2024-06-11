@@ -32,7 +32,7 @@ export default function SearchBar({ user, query, setQuery }) {
           type="search"
           id="general-search"
           className="form-control mx-2 my-2 fs-5"
-          placeholder="Artists, Songs..."
+          placeholder={user ? 'Artists, Songs...' : 'Login to Search'}
           value={query}
           onChange={handleQuery}
           onReset={handleClear}
