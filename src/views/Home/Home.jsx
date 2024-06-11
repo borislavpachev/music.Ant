@@ -5,10 +5,9 @@ import TrackMusicCard from '../../components/TrackMusicCard/TrackMusicCard';
 import HorizontalScroll from '../../hoc/HorizontalScroll';
 import { AppContext } from '../../contexts/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { redirectUri } from '../../spotify.config';
-import toast from 'react-hot-toast';
 import Loader from '../../components/Loader/Loader';
 import HomeInfo from '../../components/HomeInfo/HomeInfo';
+import { getToken } from '../../services/spotify.service';
 
 export default function Home({ accessToken, setAccessToken }) {
   const [newReleases, setNewReleases] = useState(null);
@@ -21,7 +20,7 @@ export default function Home({ accessToken, setAccessToken }) {
     const code = urlParams.get('code');
 
     if (code) {
-      getToken(code);
+      getToken(code,setAccessToken);
       navigate('/');
     }
   }, [navigate]);
@@ -44,41 +43,6 @@ export default function Home({ accessToken, setAccessToken }) {
       }
     });
   }, [accessToken]);
-
-  const getToken = async (code) => {
-    const codeVerifier = localStorage.getItem('code_verifier');
-
-    const payload = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        client_id: `${import.meta.env.VITE_CLIENT_ID}`,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri,
-        code_verifier: codeVerifier,
-      }),
-    };
-
-    try {
-      const response = await fetch(
-        'https://accounts.spotify.com/api/token',
-        payload
-      );
-      const data = await response.json();
-
-      if (data) {
-        localStorage.setItem('accessToken', data.access_token);
-
-        setAccessToken(data.access_token);
-      } else {
-        console.error('Error fetching token:', data);
-      }
-    } catch (error) {
-      console.error('Error in getToken:', error);
-      toast.error('Error in getToken');
-    }
-  };
 
   const selectTrack = (track) => {
     setCurrentlyPlayingTrack(track);
