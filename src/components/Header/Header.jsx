@@ -1,44 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { AppContext } from '../../contexts/AppContext';
 import { ThemeContext } from '../../contexts/theme';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Login from '../Login/Login';
 import ThemeSwitch from '../ThemeSwitch/ThemeSwitch';
 import SearchBar from '../SearchBar/SearchBar';
 import { PropTypes } from 'prop-types';
 import './Header.css';
+import useHeader from '../../hooks/useHeader';
 
 export default function Header({ user, logout }) {
-  const [{ search, setSearch }] = useContext(AppContext);
+  const [{ setSearch }] = useContext(AppContext);
   const [{ theme, isDark }] = useContext(ThemeContext);
-  const [query, setQuery] = useState('');
+  const { query, setQuery } = useHeader();
 
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const queryParams = urlParams.get('query');
-    if (queryParams) {
-      setQuery(queryParams);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (search && location.pathname !== '/search') {
-      navigate('/search');
-    }
-  }, [search, location.pathname, navigate]);
-
-  useEffect(() => {
-    if (location.pathname !== '/search') {
-      setQuery('');
-      setSearch('');
-      setTimeout(() => {
-        navigate(location.pathname);
-      }, 100);
-    }
-  }, [location.pathname, setSearch, navigate]);
 
   const handleLogout = () => {
     setQuery('');

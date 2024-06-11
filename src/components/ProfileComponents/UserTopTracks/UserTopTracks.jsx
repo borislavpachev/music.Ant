@@ -1,34 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
-import { getMyTopTracks } from '../../../services/music.service';
+import { useContext } from 'react';
 import TrackMusicCard from '../../TrackMusicCard/TrackMusicCard';
 import HorizontalScroll from '../../../hoc/HorizontalScroll';
 import { AppContext } from '../../../contexts/AppContext';
-import toast from 'react-hot-toast';
+import useMyTopTracks from '../../../hooks/useMyTopTracks';
 
 export default function UserTopTracks() {
-  const [userTopTracks, setUserTopTracks] = useState(null);
   const [{ setCurrentlyPlayingTrack }] = useContext(AppContext);
-
-  useEffect(() => {
-    getMyTopTracks()
-      .then((data) => {
-        if (data) {
-          setUserTopTracks(
-            data.map((track) => {
-              return {
-                artist: track.artists[0].name,
-                trackName: track.name,
-                uri: track.uri,
-                albumCover: track.album.images[0].url,
-              };
-            })
-          );
-        }
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  }, []);
+  const { userTopTracks } = useMyTopTracks();
 
   const selectTrack = (track) => {
     setCurrentlyPlayingTrack(track);
