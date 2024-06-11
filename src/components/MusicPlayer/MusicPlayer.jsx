@@ -3,8 +3,11 @@ import SpotifyPlayer from 'react-spotify-web-playback';
 import { PropTypes } from 'prop-types';
 import './MusicPlayer.css';
 import { ThemeContext } from '../../contexts/theme';
+import { AppContext } from '../../contexts/AppContext';
 
-export default function MusicPlayer({ token, uri, setTrack }) {
+export default function MusicPlayer({ token }) {
+  const [{ currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
+    useContext(AppContext);
   const [{ isDark }] = useContext(ThemeContext);
 
   if (!token) return;
@@ -16,7 +19,7 @@ export default function MusicPlayer({ token, uri, setTrack }) {
       <SpotifyPlayer
         token={token}
         play={true}
-        uris={uri ? [uri] : []}
+        uris={currentlyPlayingTrack ? [currentlyPlayingTrack] : []}
         styles={{
           sliderColor: '#28a745',
           bgColor: isDark ? '#343a40' : '#f8f9fa',
@@ -25,7 +28,7 @@ export default function MusicPlayer({ token, uri, setTrack }) {
         }}
       />
       <span
-        onClick={() => setTrack(null)}
+        onClick={() => setCurrentlyPlayingTrack(null)}
         style={{ cursor: 'pointer' }}
         className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
       >

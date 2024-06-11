@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [{ theme }] = useContext(ThemeContext);
-  const [{ setAppLoading, currentlyPlayingTrack, setCurrentlyPlayingTrack }] =
+  const [{ setAppLoading, currentlyPlayingTrack }] =
     useContext(AppContext);
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
@@ -72,8 +72,6 @@ function App() {
           {currentlyPlayingTrack && (
             <MusicPlayer
               token={accessToken}
-              uri={currentlyPlayingTrack}
-              setTrack={setCurrentlyPlayingTrack}
             />
           )}
           <Routes>
