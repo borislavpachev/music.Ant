@@ -12,9 +12,9 @@
 
 ### Installation
 
-Clone the repository: https://github.com/borislavpachev/borislavpachev-musicAnt
-Install the dependencies: npm install
-Start the server : npm run dev
+- Clone the repository: https://github.com/borislavpachev/borislavpachev-musicAnt
+- Install the dependencies: npm install
+- Start the server : npm run dev
 
 ### Usage
 
